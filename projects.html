@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Try Byte Tools — full project bank. Every Unity editor extension we've built, are building, or are planning." />
+  <title>Project Bank — Try Byte Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="page-transition"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<div id="nav-container"></div>
+
+<!-- ════ PAGE HEADER ════════════════════════════════════════════════ -->
+<div class="page-header">
+  <p class="hero-eyebrow">Unity Asset Store</p>
+  <h1>Project <span class="blue">Bank</span></h1>
+  <p>Every tool we've built, are building, and are planning — in one place. The bank grows one C# file at a time.</p>
+</div>
+
+<!-- ════ CONTROLS ═══════════════════════════════════════════════════ -->
+<div class="controls-bar">
+  <div class="cat-tabs">
+    <button class="cat-tab active" data-filter="all">All</button>
+    <button class="cat-tab" data-filter="live">Live</button>
+    <button class="cat-tab" data-filter="wip">In Dev</button>
+    <button class="cat-tab" data-filter="concept">Concept</button>
+  </div>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input class="search-input" type="text" id="search-input" placeholder="Search tools..." />
+  </div>
+</div>
+
+<!-- ════ RESULTS META ═══════════════════════════════════════════════ -->
+<div class="results-meta">
+  <span class="results-count" id="results-count">Showing <strong>0</strong> tools</span>
+  <div class="view-toggle">
+    <button class="view-btn active" id="btn-grid" title="Grid view">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+    </button>
+    <button class="view-btn" id="btn-list" title="List view">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ════ PROJECT GRID ═══════════════════════════════════════════════ -->
+<div id="project-grid">
+  <div class="project-grid" id="cards-container"></div>
+  <div class="empty-state" id="empty-state">
+    <div class="empty-glyph">◈</div>
+    <p>No tools match your filter.</p>
+  </div>
+</div>
+
+<div id="footer-container"></div>
+
+<!-- ════ SCRIPTS ════════════════════════════════════════════════════ -->
+<script src="projects-data.js"></script>
+<script>
+  // Nav & footer
+  document.getElementById('nav-container').innerHTML   = TBT_renderNav('projects');
+  document.getElementById('footer-container').innerHTML = TBT_renderFooter();
+
+  // Nav scroll state
+  const navEl = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
+
+  // Card link icons
+  const ICONS = {
+    github: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>`,
+    store:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
+  };
+  const STATUS_LABEL = { live: 'Live', wip: 'In Dev', concept: 'Concept' };
+
+  function buildCard(p) {
+    const linksHtml = p.links.length
+      ? p.links.map(l => `<a href="${l.href}" class="pcard-link">${ICONS[l.icon] || ''} ${l.label}</a>`).join('')
+      : '';
+    return `
+      <div class="pcard${p.status !== 'live' ? ' wip-card' : ''} reveal"
+           data-cat="${p.category}" data-status="${p.status}" data-title="${p.title.toLowerCase()}">
+        <div class="pcard-top">
+          <span class="ptag ptag-${p.category}">${p.tagLabel}</span>
+          <span class="pcard-num">${p.id}</span>
+        </div>
+        <h3 class="pcard-title">${p.title}</h3>
+        <p class="pcard-desc">${p.desc}</p>
+        <div class="days-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ~${p.days} day build · ${p.revenue} list price
+        </div>
+        <div class="pcard-footer">
+          <div class="pcard-links">${linksHtml}</div>
+          <span class="pstatus">
+            <span class="pstatus-dot ${p.status}"></span>
+            ${STATUS_LABEL[p.status]}
+          </span>
+        </div>
+      </div>`;
+  }
+
+  const container  = document.getElementById('cards-container');
+  const emptyState = document.getElementById('empty-state');
+  const countEl    = document.getElementById('results-count');
+
+  function renderCards(filter = 'all', query = '') {
+    const q = query.trim().toLowerCase();
+    const filtered = TBT_PROJECTS.filter(p => {
+      const matchFilter = filter === 'all' || p.status === filter;
+      const matchQuery  = !q || p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+      return matchFilter && matchQuery;
+    });
+    container.innerHTML = filtered.map(buildCard).join('');
+    const n = filtered.length;
+    countEl.innerHTML = `Showing <strong>${n}</strong> tool${n !== 1 ? 's' : ''}`;
+    emptyState.classList.toggle('show', n === 0);
+    TBT_initReveal();
+    TBT_initCardSpotlight();
+  }
+
+  let activeFilter = 'all', searchQuery = '';
+
+  document.querySelectorAll('.cat-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      renderCards(activeFilter, searchQuery);
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQuery = e.target.value;
+    renderCards(activeFilter, searchQuery);
+  });
+
+  // View toggle
+  const gridWrap = document.getElementById('project-grid');
+  document.getElementById('btn-grid').addEventListener('click', () => {
+    gridWrap.classList.remove('view-list');
+    document.getElementById('btn-grid').classList.add('active');
+    document.getElementById('btn-list').classList.remove('active');
+  });
+  document.getElementById('btn-list').addEventListener('click', () => {
+    gridWrap.classList.add('view-list');
+    document.getElementById('btn-list').classList.add('active');
+    document.getElementById('btn-grid').classList.remove('active');
+  });
+
+  // Initial render
+  renderCards();
+
+  // Init shared systems
+  TBT_initBackground();
+  TBT_initCursor();
+  TBT_initPageTransition();
+</script>
+</body>
+</html>

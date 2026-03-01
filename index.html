@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Try Byte Tools — Unity editor extensions built for developers who ship. Clean C#, Asset Store ready." />
+  <title>Try Byte Tools — Unity Editor Extensions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="page-transition"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<div id="nav-container"></div>
+
+<!-- ════ HERO ═══════════════════════════════════════════════════════ -->
+<section class="hero">
+  <p class="hero-eyebrow">Try Byte Tools · Portfolio</p>
+  <h1 class="hero-title">
+    <span class="blue">Try Byte Tools</span>
+  </h1>
+  <p class="hero-tagline">
+    A small team that just wants to build cool stuff together. We want to share with the world what we're working on — no corporate nonsense, no marketing fluff, just good code and real projects.
+  </p>
+  <div class="hero-btns">
+    <a href="projects.html" class="btn btn-blue"><span>Browse Projects →</span></a>
+    <a href="#about" class="btn btn-outline">Meet the Team</a>
+  </div>
+  <div class="hero-pills">
+    <div class="hero-pill"><div class="hero-pill-dot"></div>5 Projects</div>
+    <div class="hero-pill"><div class="hero-pill-dot" style="background:#ffd066;box-shadow:0 0 6px #ffd066;"></div>Growing Team</div>
+    <div class="hero-pill"><div class="hero-pill-dot" style="background:var(--muted);box-shadow:none;"></div>All Stacks</div>
+    <div class="hero-pill"><div class="hero-pill-dot" style="background:var(--muted);box-shadow:none;"></div>Open Source</div>
+  </div>
+</section>
+
+<!-- The "How We Work" / "The Way We Build" section has been removed. -->
+
+<!-- ════ PIPELINE ════════════════════════════════════════════════════ -->
+<hr class="divider" />
+<div class="section-wrap" id="pipeline">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
+    <div>
+      <p class="section-eyebrow reveal">Pipeline</p>
+      <h2 class="section-title reveal delay-1">What's<br><span class="blue">Coming</span></h2>
+      <p class="section-sub reveal delay-2">Every tool in the portfolio. Updated as we plan and build.</p>
+    </div>
+    <div>
+      <div id="pipeline-list" class="reveal delay-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ ABOUT ════════════════════════════════════════════════════════ -->
+<hr class="divider" />
+<div class="section-wrap" id="about">
+  <div class="about-split">
+    <div class="about-body">
+      <p class="section-eyebrow reveal">About</p>
+      <h2 class="section-title reveal delay-1" style="margin-bottom:2rem;">Real Devs,<br><span class="blue">Real Code</span></h2>
+      <div class="reveal delay-2">
+        <p><strong>Try Byte Tools</strong> started as one developer's side project and turned into something better — a small crew of friends who just like building things.</p>
+        <p>We work on whatever's interesting: Unity tools, web apps, games, mobile projects. There's no corporate agenda here. Just <em>developers who want to ship cool stuff together</em> and maybe make a little money doing it.</p>
+        <p>The team grows when the right people show up. If you've got a project idea or want to collaborate, <strong>reach out</strong> — the door is open.</p>
+      </div>
+      <div class="stats reveal delay-3">
+        <div class="stat-box"><span class="stat-num" data-count="5">0</span><div class="stat-label">Projects</div></div>
+        <div class="stat-box"><span class="stat-num" data-count="2">0</span><div class="stat-label">Team Members</div></div>
+      </div>
+    </div>
+    <div class="reveal delay-2">
+      <p class="section-eyebrow" style="margin-bottom:1.5rem;">Team</p>
+      <div class="team-grid" id="team-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CONTACT ══════════════════════════════════════════════════════ -->
+<hr class="divider" />
+<div class="section-wrap" id="contact">
+  <p class="section-eyebrow reveal">Contact</p>
+  <h2 class="section-title reveal delay-1" style="margin-bottom:0.6rem;">Let's Talk</h2>
+  <p class="section-sub reveal delay-2">Bug report, collab idea, tool request, or just want to say hi — all of it is welcome.</p>
+  <div class="contact-grid">
+    <div class="contact-links reveal delay-2">
+      <a href="mailto:TryByteTools@gmail.com" class="clink">
+        <div class="clink-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="clink-label">Email</div>
+          <div class="clink-value">TryByteTools@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://github.com/trybyte-tools" target="_blank" rel="noopener" class="clink">
+        <div class="clink-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        </div>
+        <div>
+          <div class="clink-label">GitHub</div>
+          <div class="clink-value">github.com/trybyte-tools</div>
+        </div>
+      </a>
+      <a href="https://assetstore.unity.com" target="_blank" rel="noopener" class="clink">
+        <div class="clink-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div>
+          <div class="clink-label">Unity Asset Store</div>
+          <div class="clink-value">Try Byte Tools Publisher</div>
+        </div>
+      </a>
+    </div>
+    <div class="contact-note reveal delay-3">
+      <div class="contact-note-title">From the team</div>
+      <p>Every message gets read by an actual person. No bots, no ticket queues.</p>
+      <p>Got a project idea? Want to join the team? Found a bug? We want to hear all of it. The studio grows because people reach out.</p>
+      <p class="highlight">That's literally how this works.</p>
+    </div>
+  </div>
+</div>
+
+<div id="footer-container"></div>
+
+<!-- ════ SCRIPTS ══════════════════════════════════════════════════════ -->
+<script src="projects-data.js"></script>
+<script>
+  // Nav & footer
+  document.getElementById('nav-container').innerHTML   = TBT_renderNav('home');
+  document.getElementById('footer-container').innerHTML = TBT_renderFooter();
+  document.getElementById('team-grid').innerHTML        = TBT_renderTeam();
+
+  // Nav scroll state
+  const navEl = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
+
+  // Pipeline list
+  const pipelineData = [
+    { num: '01', title: 'Folder Icons',        badge: 'live', desc: 'Custom folder colors & icons. GUID-based, zero runtime.' },
+    { num: '02', title: 'Scene Bookmarks',      badge: 'wip',  desc: 'Save & restore camera positions in the Scene view.' },
+    { num: '03', title: 'Hierarchy Dividers',   badge: 'next', desc: 'Visual separator rows with labels & colors.' },
+    { num: '04', title: 'Quick Script Creator', badge: 'next', desc: 'Template-based script creation from right-click menu.' },
+    { num: '05', title: 'Component Notes',      badge: 'next', desc: 'Sticky-note annotations on any GameObject.' },
+  ];
+  const badgeLabels = { live: 'Live', wip: 'In Dev', next: 'Concept' };
+  document.getElementById('pipeline-list').innerHTML = pipelineData.map((p, i) => `
+    <div class="pipeline-row${p.badge === 'live' ? ' active' : ''} reveal${i > 0 ? ' delay-' + Math.min(i, 4) : ''}">
+      <div class="pipeline-num">${p.num}</div>
+      <div class="pipeline-content">
+        <div class="pipeline-title">${p.title}<span class="pipeline-badge badge-${p.badge}">${badgeLabels[p.badge]}</span></div>
+        <div class="pipeline-desc">${p.desc}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Stat counters
+  const statObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = parseInt(el.dataset.count), dur = 1500;
+      const start = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - start) / dur, 1), ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * ease);
+        if (p < 1) requestAnimationFrame(tick); else el.textContent = target;
+      })(start);
+      statObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => statObs.observe(el));
+
+  // Init shared systems
+  TBT_initBackground();
+  TBT_initCursor();
+  TBT_initReveal();
+  TBT_initPageTransition();
+</script>
+</body>
+</html>
