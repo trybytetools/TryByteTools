@@ -89,7 +89,7 @@ function TBT_renderNav(activePage = 'home') {
 /* ─── Footer ──────────────────────────────────────────────────────── */
 function TBT_renderFooter() {
   return `<footer>
-    <span>© ${new Date().getFullYear()} <span class="blue">Try Byte Tools</span>. Built for Unity devs, by Unity devs.</span>
+    <span>© ${new Date().getFullYear()} <span class="blue">Try Byte Tools</span>.</span>
     <nav class="footer-links">
       <a href="index.html">Home</a>
       <a href="projects.html">Projects</a>
