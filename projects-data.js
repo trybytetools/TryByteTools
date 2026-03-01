@@ -81,7 +81,6 @@ function TBT_renderNav(activePage = 'home') {
       ${Object.entries(pages).map(([key, p]) =>
         `<li><a href="${p.href}"${key === activePage ? ' class="active"' : ''}>${p.label}</a></li>`
       ).join('')}
-      <li><a href="https://github.com/trybyte-tools" target="_blank" rel="noopener">GitHub ↗</a></li>
     </ul>
     <a class="nav-cta" href="mailto:TryByteTools@gmail.com">Get In Touch</a>
   </nav>`;
