@@ -18,7 +18,7 @@ const TBT_PROJECTS = [
     "links": [
       {
         "label": "Asset Store",
-        "href": "#",
+        "href": "https://assetstore.unity.com/packages/slug/364634",
         "icon": "store"
       }
     ]
