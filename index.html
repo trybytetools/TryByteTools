@@ -4,6 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Try Byte Tools — a small team building games, tools, and web projects. No corporate nonsense, just good code." />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://trybytetools.github.io/TryByteTools/" />
+  <meta property="og:title"       content="Try Byte Tools" />
+  <meta property="og:description" content="A small team building games, tools, and web projects. No corporate nonsense, just good code." />
+  <meta property="og:site_name"   content="Try Byte Tools" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Try Byte Tools" />
+  <meta name="twitter:description" content="A small team building games, tools, and web projects. No corporate nonsense, just good code." />
+
   <title>Try Byte Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,8 +45,6 @@
     <a href="#about" class="btn btn-blue"><span>The Team</span></a>
   </div>
 </section>
-
-<!-- The "How We Work" / "The Way We Build" section has been removed. -->
 
 <!-- ════ PIPELINE ════════════════════════════════════════════════════ -->
 <hr class="divider" />
@@ -82,13 +93,13 @@
   <p class="section-sub reveal delay-2">Bug report, collab idea, tool request, or just want to say hi — all of it is welcome.</p>
   <div class="contact-grid">
     <div class="contact-links reveal delay-2">
-      <a href="mailto:TryByteTools@gmail.com" class="clink">
+      <a id="contact-email-link" href="mailto:TryByteTools@gmail.com" class="clink">
         <div class="clink-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </div>
         <div>
           <div class="clink-label">Email</div>
-          <div class="clink-value">TryByteTools@gmail.com</div>
+          <div class="clink-value" id="contact-email-val">TryByteTools@gmail.com</div>
         </div>
       </a>
     </div>
@@ -106,24 +117,27 @@
 <!-- ════ SCRIPTS ══════════════════════════════════════════════════════ -->
 <script src="projects-data.js"></script>
 <script>
-  // Nav & footer
-  document.getElementById('nav-container').innerHTML   = TBT_renderNav('home');
+  // Nav & footer (uses TBT_SETTINGS from projects-data.js)
+  document.getElementById('nav-container').innerHTML    = TBT_renderNav('home');
   document.getElementById('footer-container').innerHTML = TBT_renderFooter();
   document.getElementById('team-grid').innerHTML        = TBT_renderTeam();
+
+  // Update contact email from TBT_SETTINGS if available
+  if (TBT_SETTINGS && TBT_SETTINGS.email) {
+    const email = TBT_SETTINGS.email;
+    document.getElementById('contact-email-link').href = 'mailto:' + email;
+    document.getElementById('contact-email-val').textContent = email;
+  }
 
   // Nav scroll state
   const navEl = document.getElementById('main-nav');
   window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
 
-  // Pipeline list — driven by TBT_PIPELINE from projects-data.js
+  // Pipeline list
   const PIPE_LABELS = { release: 'Release', update: 'Update', idea: 'Idea' };
   document.getElementById('pipeline-list').innerHTML = TBT_PIPELINE.map((p, i) => {
-    const versionChip = p.version
-      ? `<span class="pipeline-version">v${p.version}</span>`
-      : '';
-    const patchLink = p.patchNotesUrl
-      ? `<a href="${p.patchNotesUrl}" class="pipeline-patch-link" target="_blank" rel="noopener">patch notes ↗</a>`
-      : '';
+    const versionChip = p.version ? `<span class="pipeline-version">v${p.version}</span>` : '';
+    const patchLink   = p.patchNotesUrl ? `<a href="${p.patchNotesUrl}" class="pipeline-patch-link" target="_blank" rel="noopener">patch notes ↗</a>` : '';
     return `
       <div class="pipeline-row pipeline-type-${p.type} reveal${i > 0 ? ' delay-' + Math.min(i, 4) : ''}">
         <div class="pipeline-num">${String(i + 1).padStart(2, '0')}</div>
@@ -131,8 +145,7 @@
           <div class="pipeline-title">
             ${p.title}
             <span class="pipeline-badge badge-${p.type}">${PIPE_LABELS[p.type] || p.type}</span>
-            ${versionChip}
-            ${patchLink}
+            ${versionChip}${patchLink}
           </div>
           <div class="pipeline-desc">${p.desc}</div>
         </div>
@@ -155,7 +168,6 @@
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-count]').forEach(el => statObs.observe(el));
 
-  // Init shared systems
   TBT_initBackground();
   TBT_initCursor();
   TBT_initReveal();

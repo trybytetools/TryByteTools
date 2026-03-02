@@ -4,11 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Try Byte Tools — full project bank. Every Unity editor extension we've built, are building, or are planning." />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://trybytetools.github.io/TryByteTools/projects.html" />
+  <meta property="og:title"       content="Project Bank — Try Byte Tools" />
+  <meta property="og:description" content="Every tool we've built, are building, and are planning — Unity tools, games, web apps, and more." />
+  <meta property="og:site_name"   content="Try Byte Tools" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Project Bank — Try Byte Tools" />
+  <meta name="twitter:description" content="Every tool we've built, are building, and are planning." />
+
   <title>Project Bank — Try Byte Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* ── Dual-axis filter bar ──────────────────────────────────── */
+    .controls-bar { flex-direction: column; align-items: stretch; gap: 0.85rem; }
+    .controls-row {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 0.85rem;
+    }
+
+    /* Category tab colour accents when active */
+    .cat-tab[data-cat="unity"].active   { background: rgba(61,158,255,0.13);  color: #7dc8ff; border-color: rgba(61,158,255,0.45); }
+    .cat-tab[data-cat="game"].active    { background: rgba(140,74,255,0.11);  color: #b89fff; border-color: rgba(140,74,255,0.4); }
+    .cat-tab[data-cat="python"].active  { background: rgba(255,200,74,0.1);   color: #ffd87a; border-color: rgba(255,200,74,0.35); }
+    .cat-tab[data-cat="android"].active { background: rgba(74,255,140,0.1);   color: #7fffc0; border-color: rgba(74,255,140,0.35); }
+    .cat-tab[data-cat="web"].active     { background: rgba(0,186,255,0.1);    color: #7dd8ff; border-color: rgba(0,186,255,0.45); }
+    .cat-tab[data-cat="ai"].active      { background: rgba(255,74,180,0.1);   color: #ff9de0; border-color: rgba(255,74,180,0.4); }
+
+    /* Count badge on category tabs */
+    .cat-tab .tab-count {
+      font-size: 0.52rem; opacity: 0.55;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 0.05rem 0.35rem;
+      margin-left: 0.25rem;
+    }
+    .cat-tab.active .tab-count { opacity: 0.75; }
+
+    /* Active filter summary pills */
+    .active-filters {
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; color: var(--muted); min-height: 22px;
+    }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(61,158,255,0.07); color: var(--blue-bright);
+      border: 1px solid rgba(61,158,255,0.25); border-radius: 100px;
+      padding: 0.15rem 0.6rem; font-size: 0.58rem; letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .filter-pill-clear { cursor: pointer; opacity: 0.7; transition: opacity .15s; font-size: 0.7rem; line-height: 1; }
+    .filter-pill-clear:hover { opacity: 1; }
+  </style>
 </head>
 <body>
 
@@ -27,18 +82,37 @@
 
 <!-- ════ CONTROLS ═══════════════════════════════════════════════════ -->
 <div class="controls-bar">
-  <div class="cat-tabs">
-    <button class="cat-tab active" data-filter="all">All</button>
-    <button class="cat-tab" data-filter="live">Live</button>
-    <button class="cat-tab" data-filter="wip">In Dev</button>
-    <button class="cat-tab" data-filter="idea">Idea</button>
+
+  <!-- Row 1 — Status + Search -->
+  <div class="controls-row">
+    <div class="cat-tabs" id="status-tabs">
+      <button class="cat-tab active" data-filter="all">All</button>
+      <button class="cat-tab" data-filter="live">Live</button>
+      <button class="cat-tab" data-filter="wip">In Dev</button>
+      <button class="cat-tab" data-filter="idea">Idea</button>
+    </div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" id="search-input" placeholder="Search tools..." />
+    </div>
   </div>
-  <div class="search-wrap">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
-    <input class="search-input" type="text" id="search-input" placeholder="Search tools..." />
+
+  <!-- Row 2 — Category tabs + active filter pills -->
+  <div class="controls-row">
+    <div class="cat-tabs" id="cat-tabs">
+      <button class="cat-tab active" data-cat="all">All Categories</button>
+      <button class="cat-tab" data-cat="unity">Unity</button>
+      <button class="cat-tab" data-cat="game">Game</button>
+      <button class="cat-tab" data-cat="web">Web</button>
+      <button class="cat-tab" data-cat="python">Python</button>
+      <button class="cat-tab" data-cat="android">Android</button>
+      <button class="cat-tab" data-cat="ai">AI</button>
+    </div>
+    <div class="active-filters" id="active-filters"></div>
   </div>
+
 </div>
 
 <!-- ════ RESULTS META ═══════════════════════════════════════════════ -->
@@ -79,30 +153,30 @@
 <!-- ════ SCRIPTS ════════════════════════════════════════════════════ -->
 <script src="projects-data.js"></script>
 <script>
-  // Nav & footer
-  document.getElementById('nav-container').innerHTML   = TBT_renderNav('projects');
+  // ── Bootstrap ──────────────────────────────────────────────────
+  document.getElementById('nav-container').innerHTML    = TBT_renderNav('projects');
   document.getElementById('footer-container').innerHTML = TBT_renderFooter();
 
-  // Nav scroll state
   const navEl = document.getElementById('main-nav');
   window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
 
+  // ── Icons ──────────────────────────────────────────────────────
   const ICONS = {
     github: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>`,
     store:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
   };
   const STATUS_LABEL = { live: 'Live', wip: 'In Dev', idea: 'Idea' };
+  const CAT_LABEL    = { unity: 'Unity', game: 'Game', web: 'Web', python: 'Python', android: 'Android', ai: 'AI', all: 'All' };
 
+  // ── Card builder ────────────────────────────────────────────────
   function buildCard(p) {
     const linksHtml = (p.links || []).length
       ? p.links.map(l => `<a href="${l.href}" class="pcard-link" target="_blank" rel="noopener">${ICONS[l.icon] || ''} ${l.label}</a>`).join('')
       : '';
-
     const hasPatches = p.patchNotes && p.patchNotes.length > 0;
     const versionHtml = p.version
-      ? `<span class="pcard-version">v${p.version}${hasPatches ? `<button class="patch-btn" onclick="openPatches(event,${TBT_PROJECTS.indexOf(p)})">patch notes</button>` : ''}</span>`
+      ? `<span class="pcard-version">v${p.version}${hasPatches ? `<button class="patch-btn" onclick="openPatches(event,'${p.id}')">patch notes</button>` : ''}</span>`
       : '';
-
     return `
       <div class="pcard${p.status !== 'live' ? ' wip-card' : ''} reveal"
            data-cat="${p.category}" data-status="${p.status}" data-title="${p.title.toLowerCase()}">
@@ -115,7 +189,7 @@
         <div class="pcard-meta">
           ${p.author ? `<span class="pcard-author">by ${p.author}</span>` : ''}
           ${versionHtml}
-          <span class="pcard-price">${p.revenue}</span>
+          <span class="pcard-price">${typeof p.price !== 'undefined' ? p.price : (p.revenue || '')}</span>
         </div>
         <div class="pcard-footer">
           <div class="pcard-links">${linksHtml}</div>
@@ -127,16 +201,42 @@
       </div>`;
   }
 
+  // ── State ───────────────────────────────────────────────────────
   const container  = document.getElementById('cards-container');
   const emptyState = document.getElementById('empty-state');
   const countEl    = document.getElementById('results-count');
+  let activeStatus = 'all';
+  let activeCat    = 'all';
+  let searchQuery  = '';
 
-  function renderCards(filter = 'all', query = '') {
-    const q = query.trim().toLowerCase();
+  // Build an ID → project lookup for patch modal
+  const PROJ_BY_ID = Object.fromEntries(TBT_PROJECTS.map(p => [p.id, p]));
+
+  // ── Count badges on category tabs ───────────────────────────────
+  function updateCatCounts() {
+    const q = searchQuery.trim().toLowerCase();
+    document.querySelectorAll('#cat-tabs .cat-tab').forEach(btn => {
+      const cat = btn.dataset.cat;
+      if (cat === 'all') return;
+      const count = TBT_PROJECTS.filter(p => {
+        return (activeStatus === 'all' || p.status === activeStatus)
+          && p.category === cat
+          && (!q || p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      }).length;
+      let badge = btn.querySelector('.tab-count');
+      if (!badge) { badge = document.createElement('span'); badge.className = 'tab-count'; btn.appendChild(badge); }
+      badge.textContent = count;
+      btn.style.opacity = count === 0 ? '0.35' : '';
+    });
+  }
+
+  // ── Render ──────────────────────────────────────────────────────
+  function renderCards() {
+    const q = searchQuery.trim().toLowerCase();
     const filtered = TBT_PROJECTS.filter(p => {
-      const matchFilter = filter === 'all' || p.status === filter;
-      const matchQuery  = !q || p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
-      return matchFilter && matchQuery;
+      return (activeStatus === 'all' || p.status === activeStatus)
+        && (activeCat    === 'all' || p.category === activeCat)
+        && (!q || p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
     });
     container.innerHTML = filtered.map(buildCard).join('');
     const n = filtered.length;
@@ -144,12 +244,42 @@
     emptyState.classList.toggle('show', n === 0);
     TBT_initReveal();
     TBT_initCardSpotlight();
+    updateCatCounts();
+    updateActivePills();
   }
 
-  // Patch notes modal
-  function openPatches(e, idx) {
+  // ── Filter pills ────────────────────────────────────────────────
+  function updateActivePills() {
+    const wrap = document.getElementById('active-filters');
+    const pills = [];
+    if (activeStatus !== 'all')
+      pills.push(`<span class="filter-pill">${STATUS_LABEL[activeStatus] || activeStatus}<span class="filter-pill-clear" onclick="clearStatus()" title="Remove">✕</span></span>`);
+    if (activeCat !== 'all')
+      pills.push(`<span class="filter-pill">${CAT_LABEL[activeCat] || activeCat}<span class="filter-pill-clear" onclick="clearCat()" title="Remove">✕</span></span>`);
+    if (searchQuery)
+      pills.push(`<span class="filter-pill">"${searchQuery.slice(0,18)}${searchQuery.length>18?'…':''}"<span class="filter-pill-clear" onclick="clearSearch()" title="Remove">✕</span></span>`);
+    wrap.innerHTML = pills.length ? `<span style="margin-right:.15rem">Filtered:</span>` + pills.join('') : '';
+  }
+  function clearStatus() {
+    activeStatus = 'all';
+    document.querySelectorAll('#status-tabs .cat-tab').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+    renderCards();
+  }
+  function clearCat() {
+    activeCat = 'all';
+    document.querySelectorAll('#cat-tabs .cat-tab').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all'));
+    renderCards();
+  }
+  function clearSearch() {
+    searchQuery = '';
+    document.getElementById('search-input').value = '';
+    renderCards();
+  }
+
+  // ── Patch notes modal ────────────────────────────────────────────
+  function openPatches(e, projectId) {
     e.preventDefault(); e.stopPropagation();
-    const p = TBT_PROJECTS[idx];
+    const p = PROJ_BY_ID[projectId];
     if (!p || !p.patchNotes || !p.patchNotes.length) return;
     document.getElementById('patch-modal-title').textContent = p.title + ' — Patch Notes';
     document.getElementById('patch-modal-body').innerHTML = p.patchNotes.map(n => `
@@ -163,9 +293,8 @@
     `).join('');
     document.getElementById('patch-modal').classList.add('open');
   }
-  document.getElementById('patch-modal-close').addEventListener('click', () => {
-    document.getElementById('patch-modal').classList.remove('open');
-  });
+  document.getElementById('patch-modal-close').addEventListener('click', () =>
+    document.getElementById('patch-modal').classList.remove('open'));
   document.getElementById('patch-modal').addEventListener('click', e => {
     if (e.target === document.getElementById('patch-modal'))
       document.getElementById('patch-modal').classList.remove('open');
@@ -174,23 +303,29 @@
     if (e.key === 'Escape') document.getElementById('patch-modal').classList.remove('open');
   });
 
-  let activeFilter = 'all', searchQuery = '';
-
-  document.querySelectorAll('.cat-tab').forEach(btn => {
+  // ── Tab listeners ────────────────────────────────────────────────
+  document.querySelectorAll('#status-tabs .cat-tab').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#status-tabs .cat-tab').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      renderCards(activeFilter, searchQuery);
+      activeStatus = btn.dataset.filter;
+      renderCards();
     });
   });
-
+  document.querySelectorAll('#cat-tabs .cat-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#cat-tabs .cat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+      renderCards();
+    });
+  });
   document.getElementById('search-input').addEventListener('input', e => {
     searchQuery = e.target.value;
-    renderCards(activeFilter, searchQuery);
+    renderCards();
   });
 
-  // View toggle
+  // ── View toggle ──────────────────────────────────────────────────
   const gridWrap = document.getElementById('project-grid');
   document.getElementById('btn-grid').addEventListener('click', () => {
     gridWrap.classList.remove('view-list');
@@ -203,6 +338,7 @@
     document.getElementById('btn-grid').classList.remove('active');
   });
 
+  // ── Boot ─────────────────────────────────────────────────────────
   renderCards();
   TBT_initBackground();
   TBT_initCursor();

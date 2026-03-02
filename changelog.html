@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Try Byte Tools changelog — every update, fix, and release across all projects in one place." />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://trybytetools.github.io/TryByteTools/changelog.html" />
+  <meta property="og:title"       content="Changelog — Try Byte Tools" />
+  <meta property="og:description" content="Every update, fix, and release across all Try Byte Tools projects in one place." />
+  <meta property="og:site_name"   content="Try Byte Tools" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Changelog — Try Byte Tools" />
+  <meta name="twitter:description" content="Every update, fix, and release across all Try Byte Tools projects." />
+
+  <title>Changelog — Try Byte Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* ── Changelog-specific styles ──────────────────────────────── */
+    .changelog-wrap {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      padding: 0 3rem 7rem;
+    }
+
+    /* Year group header */
+    .year-group { margin-bottom: 3.5rem; }
+    .year-label {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      color: var(--blue-vivid); letter-spacing: 0.24em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .year-label::before {
+      content: ''; width: 20px; height: 1px;
+      background: var(--blue-vivid); box-shadow: 0 0 6px var(--blue-vivid);
+      flex-shrink: 0;
+    }
+    .year-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--border2), transparent);
+    }
+
+    /* Individual changelog entry */
+    .cl-entry {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0 2.5rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .cl-entry::before {
+      content: '';
+      position: absolute;
+      left: 100px; top: 0; bottom: -1.25rem;
+      width: 1px;
+      background: var(--border);
+      margin-left: 2.5rem;
+      transform: translateX(calc(-50% + 0.5px));
+    }
+    .cl-entry:last-child::before { display: none; }
+
+    .cl-date-col {
+      text-align: right;
+      padding-top: 1.4rem;
+      flex-shrink: 0;
+    }
+    .cl-date {
+      font-family: var(--font-mono); font-size: 0.64rem;
+      color: var(--muted); letter-spacing: 0.08em;
+      line-height: 1.5;
+    }
+    .cl-date strong {
+      display: block; font-size: 0.95rem;
+      color: var(--muted2); font-weight: 600; letter-spacing: 0;
+    }
+
+    .cl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.6rem;
+      position: relative; overflow: hidden;
+      transition: border-color .25s, transform .2s;
+      backdrop-filter: blur(12px);
+    }
+    .cl-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--blue-vivid), transparent);
+      opacity: 0; transition: opacity .25s;
+    }
+    .cl-card:hover { border-color: var(--border2); transform: translateX(4px); }
+    .cl-card:hover::before { opacity: 1; }
+
+    /* Timeline dot */
+    .cl-card::after {
+      content: '';
+      position: absolute;
+      left: -2.5rem; top: 1.6rem;
+      transform: translateX(-50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--blue-vivid);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 10px rgba(0,186,255,0.4);
+    }
+
+    .cl-card-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; margin-bottom: 0.6rem; flex-wrap: wrap;
+    }
+    .cl-project-tag {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.22rem 0.7rem; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      flex-shrink: 0;
+    }
+    .cl-version {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      color: var(--blue-vivid); font-weight: 700;
+    }
+    .cl-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
+    .cl-notes {
+      font-size: 0.88rem; font-weight: 300;
+      color: var(--muted2); line-height: 1.85;
+    }
+
+    /* Empty state */
+    .cl-empty {
+      text-align: center; padding: 6rem 2rem;
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .cl-empty-glyph { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3; }
+
+    /* Filter bar */
+    .cl-filter-bar {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      padding: 0 3rem 2.5rem;
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .cl-filter-label {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .changelog-wrap, .cl-filter-bar { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .cl-entry { grid-template-columns: 1fr; gap: 0; }
+      .cl-date-col { text-align: left; padding-top: 0; margin-bottom: 0.5rem; }
+      .cl-entry::before { display: none; }
+      .cl-card::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="page-transition"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<div id="nav-container"></div>
+
+<!-- ════ PAGE HEADER ════════════════════════════════════════════════ -->
+<div class="page-header">
+  <h1>Change<span class="blue">log</span></h1>
+  <p>Every update, fix, and release across all projects — newest first.</p>
+</div>
+
+<!-- ════ FILTER BAR ═════════════════════════════════════════════════ -->
+<div class="cl-filter-bar">
+  <span class="cl-filter-label">Filter</span>
+  <div class="cat-tabs" id="cl-proj-tabs">
+    <button class="cat-tab active" data-proj="all">All Projects</button>
+  </div>
+</div>
+
+<!-- ════ CHANGELOG CONTENT ══════════════════════════════════════════ -->
+<div class="changelog-wrap">
+  <div id="cl-container"></div>
+</div>
+
+<div id="footer-container"></div>
+
+<!-- ════ SCRIPTS ════════════════════════════════════════════════════ -->
+<script src="projects-data.js"></script>
+<script>
+  // ── Bootstrap ──────────────────────────────────────────────────
+  document.getElementById('nav-container').innerHTML    = TBT_renderNav('changelog');
+  document.getElementById('footer-container').innerHTML = TBT_renderFooter();
+
+  const navEl = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
+
+  // ── Build flat entry list ───────────────────────────────────────
+  // Collect all patch notes from all projects, annotate with project metadata
+  const allEntries = [];
+  TBT_PROJECTS.forEach(proj => {
+    if (!proj.patchNotes || !proj.patchNotes.length) return;
+    proj.patchNotes.forEach(note => {
+      allEntries.push({
+        projectId:    proj.id,
+        projectTitle: proj.title,
+        category:     proj.category,
+        tagLabel:     proj.tagLabel,
+        version:      note.version,
+        date:         note.date || '',
+        notes:        note.notes || '',
+      });
+    });
+  });
+
+  // Sort by date descending (most recent first)
+  allEntries.sort((a, b) => {
+    if (a.date < b.date) return 1;
+    if (a.date > b.date) return -1;
+    return 0;
+  });
+
+  // ── Populate project filter tabs ────────────────────────────────
+  const projectsWithNotes = TBT_PROJECTS.filter(p => p.patchNotes && p.patchNotes.length);
+  const tabsEl = document.getElementById('cl-proj-tabs');
+  projectsWithNotes.forEach(proj => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab';
+    btn.dataset.proj = proj.id;
+    btn.textContent = proj.title;
+    tabsEl.appendChild(btn);
+  });
+
+  // ── State ───────────────────────────────────────────────────────
+  let activeProj = 'all';
+
+  // ── Render ──────────────────────────────────────────────────────
+  function renderChangelog() {
+    const container = document.getElementById('cl-container');
+    const filtered = activeProj === 'all'
+      ? allEntries
+      : allEntries.filter(e => e.projectId === activeProj);
+
+    if (!filtered.length) {
+      container.innerHTML = `
+        <div class="cl-empty">
+          <div class="cl-empty-glyph">◈</div>
+          <p>No changelog entries yet.</p>
+        </div>`;
+      return;
+    }
+
+    // Group by year
+    const byYear = {};
+    filtered.forEach(entry => {
+      const year = entry.date ? entry.date.slice(0, 4) : 'Unknown';
+      if (!byYear[year]) byYear[year] = [];
+      byYear[year].push(entry);
+    });
+
+    const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a));
+
+    container.innerHTML = years.map(year => `
+      <div class="year-group reveal">
+        <div class="year-label">${year}</div>
+        ${byYear[year].map(entry => buildEntry(entry)).join('')}
+      </div>
+    `).join('');
+
+    TBT_initReveal();
+  }
+
+  function buildEntry(entry) {
+    const dateParts = entry.date ? entry.date.split('-') : [];
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const month = dateParts[1] ? monthNames[parseInt(dateParts[1], 10) - 1] : '';
+    const day   = dateParts[2] ? parseInt(dateParts[2], 10) : '';
+
+    // Use same ptag CSS classes as project cards
+    const tagClass = `ptag ptag-${entry.category}`;
+
+    return `
+      <div class="cl-entry reveal">
+        <div class="cl-date-col">
+          <div class="cl-date">
+            <strong>${day} ${month}</strong>
+            ${dateParts[0] || ''}
+          </div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-card-head">
+            <div>
+              <span class="${tagClass}" style="display:inline-flex;align-items:center;gap:0.4rem;margin-bottom:0.45rem;">${entry.tagLabel}</span>
+              <div class="cl-title">${entry.projectTitle}</div>
+            </div>
+            <span class="cl-version">v${entry.version}</span>
+          </div>
+          <p class="cl-notes">${entry.notes}</p>
+        </div>
+      </div>`;
+  }
+
+  // ── Tab listeners ────────────────────────────────────────────────
+  document.getElementById('cl-proj-tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.cat-tab');
+    if (!btn) return;
+    document.querySelectorAll('#cl-proj-tabs .cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeProj = btn.dataset.proj;
+    renderChangelog();
+  });
+
+  // ── Boot ─────────────────────────────────────────────────────────
+  renderChangelog();
+  TBT_initBackground();
+  TBT_initCursor();
+  TBT_initPageTransition();
+</script>
+</body>
+</html>
