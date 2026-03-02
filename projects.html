@@ -31,7 +31,7 @@
     <button class="cat-tab active" data-filter="all">All</button>
     <button class="cat-tab" data-filter="live">Live</button>
     <button class="cat-tab" data-filter="wip">In Dev</button>
-    <button class="cat-tab" data-filter="concept">Concept</button>
+    <button class="cat-tab" data-filter="idea">Idea</button>
   </div>
   <div class="search-wrap">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -65,6 +65,17 @@
 
 <div id="footer-container"></div>
 
+<!-- ════ PATCH NOTES MODAL ══════════════════════════════════════════ -->
+<div class="patch-modal-overlay" id="patch-modal">
+  <div class="patch-modal">
+    <div class="patch-modal-head">
+      <div class="patch-modal-title" id="patch-modal-title">Patch Notes</div>
+      <button class="patch-modal-close" id="patch-modal-close">✕</button>
+    </div>
+    <div class="patch-modal-body" id="patch-modal-body"></div>
+  </div>
+</div>
+
 <!-- ════ SCRIPTS ════════════════════════════════════════════════════ -->
 <script src="projects-data.js"></script>
 <script>
@@ -76,17 +87,22 @@
   const navEl = document.getElementById('main-nav');
   window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
 
-  // Card link icons
   const ICONS = {
     github: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>`,
     store:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
   };
-  const STATUS_LABEL = { live: 'Live', wip: 'In Dev', concept: 'Concept' };
+  const STATUS_LABEL = { live: 'Live', wip: 'In Dev', idea: 'Idea' };
 
   function buildCard(p) {
-    const linksHtml = p.links.length
-      ? p.links.map(l => `<a href="${l.href}" class="pcard-link">${ICONS[l.icon] || ''} ${l.label}</a>`).join('')
+    const linksHtml = (p.links || []).length
+      ? p.links.map(l => `<a href="${l.href}" class="pcard-link" target="_blank" rel="noopener">${ICONS[l.icon] || ''} ${l.label}</a>`).join('')
       : '';
+
+    const hasPatches = p.patchNotes && p.patchNotes.length > 0;
+    const versionHtml = p.version
+      ? `<span class="pcard-version">v${p.version}${hasPatches ? `<button class="patch-btn" onclick="openPatches(event,${TBT_PROJECTS.indexOf(p)})">patch notes</button>` : ''}</span>`
+      : '';
+
     return `
       <div class="pcard${p.status !== 'live' ? ' wip-card' : ''} reveal"
            data-cat="${p.category}" data-status="${p.status}" data-title="${p.title.toLowerCase()}">
@@ -96,15 +112,16 @@
         </div>
         <h3 class="pcard-title">${p.title}</h3>
         <p class="pcard-desc">${p.desc}</p>
-        <div class="days-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          ~${p.days} day build · ${p.revenue} list price
+        <div class="pcard-meta">
+          ${p.author ? `<span class="pcard-author">by ${p.author}</span>` : ''}
+          ${versionHtml}
+          <span class="pcard-price">${p.revenue}</span>
         </div>
         <div class="pcard-footer">
           <div class="pcard-links">${linksHtml}</div>
           <span class="pstatus">
             <span class="pstatus-dot ${p.status}"></span>
-            ${STATUS_LABEL[p.status]}
+            ${STATUS_LABEL[p.status] || p.status}
           </span>
         </div>
       </div>`;
@@ -123,11 +140,39 @@
     });
     container.innerHTML = filtered.map(buildCard).join('');
     const n = filtered.length;
-    countEl.innerHTML = `Showing <strong>${n}</strong> tool${n !== 1 ? 's' : ''}`;
+    countEl.innerHTML = `Showing <strong>${n}</strong> project${n !== 1 ? 's' : ''}`;
     emptyState.classList.toggle('show', n === 0);
     TBT_initReveal();
     TBT_initCardSpotlight();
   }
+
+  // Patch notes modal
+  function openPatches(e, idx) {
+    e.preventDefault(); e.stopPropagation();
+    const p = TBT_PROJECTS[idx];
+    if (!p || !p.patchNotes || !p.patchNotes.length) return;
+    document.getElementById('patch-modal-title').textContent = p.title + ' — Patch Notes';
+    document.getElementById('patch-modal-body').innerHTML = p.patchNotes.map(n => `
+      <div class="patch-entry">
+        <div class="patch-header">
+          <span class="patch-version">v${n.version}</span>
+          <span class="patch-date">${n.date}</span>
+        </div>
+        <p class="patch-notes">${n.notes}</p>
+      </div>
+    `).join('');
+    document.getElementById('patch-modal').classList.add('open');
+  }
+  document.getElementById('patch-modal-close').addEventListener('click', () => {
+    document.getElementById('patch-modal').classList.remove('open');
+  });
+  document.getElementById('patch-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('patch-modal'))
+      document.getElementById('patch-modal').classList.remove('open');
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.getElementById('patch-modal').classList.remove('open');
+  });
 
   let activeFilter = 'all', searchQuery = '';
 
@@ -158,10 +203,7 @@
     document.getElementById('btn-grid').classList.remove('active');
   });
 
-  // Initial render
   renderCards();
-
-  // Init shared systems
   TBT_initBackground();
   TBT_initCursor();
   TBT_initPageTransition();

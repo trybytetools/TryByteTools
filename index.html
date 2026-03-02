@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Try Byte Tools — Unity editor extensions built for developers who ship. Clean C#, Asset Store ready." />
+  <meta name="description" content="Try Byte Tools — a small team building games, tools, and web projects. No corporate nonsense, just good code." />
   <title>Try Byte Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,13 +29,7 @@
   </p>
   <div class="hero-btns">
     <a href="projects.html" class="btn btn-blue"><span>Browse Projects →</span></a>
-    <a href="#about" class="btn btn-outline">Meet the Team</a>
-  </div>
-  <div class="hero-pills">
-    <div class="hero-pill"><div class="hero-pill-dot"></div>5 Projects</div>
-    <div class="hero-pill"><div class="hero-pill-dot" style="background:#ffd066;box-shadow:0 0 6px #ffd066;"></div>Growing Team</div>
-    <div class="hero-pill"><div class="hero-pill-dot" style="background:var(--muted);box-shadow:none;"></div>All Stacks</div>
-    <div class="hero-pill"><div class="hero-pill-dot" style="background:var(--muted);box-shadow:none;"></div>Open Source</div>
+    <a href="#about" class="btn btn-blue"><span>The Team</span></a>
   </div>
 </section>
 
@@ -97,19 +91,6 @@
           <div class="clink-value">TryByteTools@gmail.com</div>
         </div>
       </a>
-        <div class="clink-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-        </div>
-      </a>
-      <a href="https://assetstore.unity.com" target="_blank" rel="noopener" class="clink">
-        <div class="clink-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
-        <div>
-          <div class="clink-label">Unity Asset Store</div>
-          <div class="clink-value">Try Byte Tools Publisher</div>
-        </div>
-      </a>
     </div>
     <div class="contact-note reveal delay-3">
       <div class="contact-note-title">From the team</div>
@@ -134,24 +115,29 @@
   const navEl = document.getElementById('main-nav');
   window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
 
-  // Pipeline list
-  const pipelineData = [
-    { num: '01', title: 'Folder Icons',        badge: 'live', desc: 'Custom folder colors & icons. GUID-based, zero runtime.' },
-    { num: '02', title: 'Scene Bookmarks',      badge: 'wip',  desc: 'Save & restore camera positions in the Scene view.' },
-    { num: '03', title: 'Hierarchy Dividers',   badge: 'next', desc: 'Visual separator rows with labels & colors.' },
-    { num: '04', title: 'Quick Script Creator', badge: 'next', desc: 'Template-based script creation from right-click menu.' },
-    { num: '05', title: 'Component Notes',      badge: 'next', desc: 'Sticky-note annotations on any GameObject.' },
-  ];
-  const badgeLabels = { live: 'Live', wip: 'In Dev', next: 'Concept' };
-  document.getElementById('pipeline-list').innerHTML = pipelineData.map((p, i) => `
-    <div class="pipeline-row${p.badge === 'live' ? ' active' : ''} reveal${i > 0 ? ' delay-' + Math.min(i, 4) : ''}">
-      <div class="pipeline-num">${p.num}</div>
-      <div class="pipeline-content">
-        <div class="pipeline-title">${p.title}<span class="pipeline-badge badge-${p.badge}">${badgeLabels[p.badge]}</span></div>
-        <div class="pipeline-desc">${p.desc}</div>
-      </div>
-    </div>
-  `).join('');
+  // Pipeline list — driven by TBT_PIPELINE from projects-data.js
+  const PIPE_LABELS = { release: 'Release', update: 'Update', idea: 'Idea' };
+  document.getElementById('pipeline-list').innerHTML = TBT_PIPELINE.map((p, i) => {
+    const versionChip = p.version
+      ? `<span class="pipeline-version">v${p.version}</span>`
+      : '';
+    const patchLink = p.patchNotesUrl
+      ? `<a href="${p.patchNotesUrl}" class="pipeline-patch-link" target="_blank" rel="noopener">patch notes ↗</a>`
+      : '';
+    return `
+      <div class="pipeline-row pipeline-type-${p.type} reveal${i > 0 ? ' delay-' + Math.min(i, 4) : ''}">
+        <div class="pipeline-num">${String(i + 1).padStart(2, '0')}</div>
+        <div class="pipeline-content">
+          <div class="pipeline-title">
+            ${p.title}
+            <span class="pipeline-badge badge-${p.type}">${PIPE_LABELS[p.type] || p.type}</span>
+            ${versionChip}
+            ${patchLink}
+          </div>
+          <div class="pipeline-desc">${p.desc}</div>
+        </div>
+      </div>`;
+  }).join('');
 
   // Stat counters
   const statObs = new IntersectionObserver(entries => {
