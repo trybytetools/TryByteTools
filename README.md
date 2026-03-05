@@ -4,25 +4,6 @@ Live site: **https://trybytetools.github.io/TryByteTools/**
 
 ---
 
-## Folder Structure
-
-```
-TryByteTools/
-├── Website/                  ← This repo (online)
-│   ├── index.html
-│   ├── projects.html
-│   ├── styles.css
-│   ├── projects-data.js      ← Auto-generated, do not edit directly
-│   └── assets/
-│       └── avatars/          ← Team member avatars (gitignored)
-│
-└── Website Controller/       ← Local only, never pushed to GitHub
-    ├── admin.py              ← Run this to manage the site
-    └── admin-data/           ← Local backups & data store
-```
-
----
-
 ## Making Changes
 
 All content edits go through the **admin panel**, not directly in code.
