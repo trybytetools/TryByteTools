@@ -171,7 +171,7 @@
   // ── Card builder ────────────────────────────────────────────────
   function buildCard(p) {
     const linksHtml = (p.links || []).length
-      ? p.links.map(l => `<a href="${l.href}" class="pcard-link" target="_blank" rel="noopener">${ICONS[l.icon] || ''} ${l.label}</a>`).join('')
+      ? p.links.map(l => `<a href="${l.href}" class="pcard-link" target="_blank" rel="noopener noreferrer">${ICONS[l.icon] || ''} ${l.label}</a>`).join('')
       : '';
     const hasPatches = p.patchNotes && p.patchNotes.length > 0;
     const versionHtml = p.version
@@ -342,6 +342,7 @@
   renderCards();
   TBT_initBackground();
   TBT_initCursor();
+  TBT_initMobileNav();
   TBT_initPageTransition();
 </script>
 </body>

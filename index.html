@@ -42,7 +42,7 @@
   </p>
   <div class="hero-btns">
     <a href="projects.html" class="btn btn-blue"><span>Browse Projects →</span></a>
-    <a href="#about" class="btn btn-blue"><span>The Team</span></a>
+    <a href="#about" class="btn btn-outline">The Team</a>
   </div>
 </section>
 
@@ -74,8 +74,8 @@
         <p>The team grows when the right people show up. If you've got a project idea or want to collaborate, <strong>reach out</strong> — the door is open.</p>
       </div>
       <div class="stats reveal delay-3">
-        <div class="stat-box"><span class="stat-num" data-count="5">0</span><div class="stat-label">Projects</div></div>
-        <div class="stat-box"><span class="stat-num" data-count="2">0</span><div class="stat-label">Team Members</div></div>
+        <div class="stat-box"><span class="stat-num" data-stat="projects">0</span><div class="stat-label">Projects</div></div>
+        <div class="stat-box"><span class="stat-num" data-stat="team">0</span><div class="stat-label">Team Members</div></div>
       </div>
     </div>
     <div class="reveal delay-2">
@@ -136,8 +136,8 @@
   // Pipeline list
   const PIPE_LABELS = { release: 'Release', update: 'Update', idea: 'Idea' };
   document.getElementById('pipeline-list').innerHTML = TBT_PIPELINE.map((p, i) => {
-    const versionChip = p.version ? `<span class="pipeline-version">v${p.version}</span>` : '';
-    const patchLink   = p.patchNotesUrl ? `<a href="${p.patchNotesUrl}" class="pipeline-patch-link" target="_blank" rel="noopener">patch notes ↗</a>` : '';
+    const versionChip = p.version ? `<span class="pipeline-version">Version: ${p.version}</span>` : '';
+    const patchLink   = p.patchNotesUrl ? `<a href="${p.patchNotesUrl}" class="pipeline-patch-link" target="_blank" rel="noopener noreferrer">patch notes ↗</a>` : '';
     return `
       <div class="pipeline-row pipeline-type-${p.type} reveal${i > 0 ? ' delay-' + Math.min(i, 4) : ''}">
         <div class="pipeline-num">${String(i + 1).padStart(2, '0')}</div>
@@ -152,11 +152,20 @@
       </div>`;
   }).join('');
 
-  // Stat counters
+  // Stat counters — derive counts from live data, never hardcode
+  const statCounts = {
+    projects: TBT_PROJECTS.filter(p => p.status !== 'archived').length,
+    team:     TBT_TEAM.length,
+  };
+  document.querySelectorAll('[data-stat]').forEach(el => {
+    const key = el.dataset.stat;
+    if (statCounts[key] !== undefined) el.dataset.count = statCounts[key];
+  });
+
   const statObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
-      const el = e.target, target = parseInt(el.dataset.count), dur = 1500;
+      const el = e.target, target = parseInt(el.dataset.count) || 0, dur = 1500;
       const start = performance.now();
       (function tick(now) {
         const p = Math.min((now - start) / dur, 1), ease = 1 - Math.pow(1 - p, 3);
@@ -171,6 +180,7 @@
   TBT_initBackground();
   TBT_initCursor();
   TBT_initReveal();
+  TBT_initMobileNav();
   TBT_initPageTransition();
 </script>
 </body>
