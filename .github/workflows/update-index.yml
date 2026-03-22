@@ -1,0 +1,58 @@
+name: Update Data Index
+
+# Runs whenever a commit touches the /data/ folder
+# (i.e. every time Decap CMS saves a new project, pipeline entry, or team member)
+on:
+  push:
+    paths:
+      - 'data/**'
+    branches:
+      - main
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    # Only run if the commit wasn't already from this action (avoid loops)
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Rebuild data/index.json
+        run: |
+          python3 - <<'EOF'
+          import json, os, pathlib
+
+          root = pathlib.Path('data')
+
+          def slugs(folder):
+              p = root / folder
+              if not p.is_dir():
+                  return []
+              return sorted(
+                  f.stem for f in p.iterdir()
+                  if f.suffix == '.json' and not f.stem.startswith('_')
+              )
+
+          index = {
+              'projects':  slugs('projects'),
+              'pipeline':  slugs('pipeline'),
+              'team':      slugs('team'),
+          }
+
+          out = root / 'index.json'
+          out.write_text(json.dumps(index, indent=2) + '\n')
+          print(f"Written {out}: {index}")
+          EOF
+
+      - name: Commit updated index if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/index.json
+          # Only commit if there's actually a change
+          git diff --staged --quiet || git commit -m "chore: update data/index.json [skip ci]"
+          git push

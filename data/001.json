@@ -1,0 +1,16 @@
+{
+  "id": "001",
+  "title": "Folder Icons",
+  "category": "unity",
+  "tagLabel": "Unity Tool",
+  "status": "wip",
+  "author": "Dminx",
+  "version": "1.0.0",
+  "desc": "Right-click any folder in the Unity Project window to assign a custom color or icon. GUID-based persistence, zero runtime cost, easily importable.",
+  "links": [
+    { "label": "Asset Store", "href": "#", "icon": "store" }
+  ],
+  "patchNotes": [
+    { "version": "0.9.9", "date": "2026-03-10", "notes": "Waiting on release on the Unity Asset Store." }
+  ]
+}

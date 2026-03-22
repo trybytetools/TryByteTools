@@ -1,0 +1,23 @@
+# ── Try Byte Tools — Netlify config ──────────────────────────────
+# Netlify is used ONLY for Identity + Git Gateway (Decap CMS auth).
+# The actual site is hosted on GitHub Pages, not Netlify.
+# You don't need to deploy to Netlify — just connect the repo so
+# the auth backend exists.
+
+[build]
+  # No build step — pure static site
+  publish = "."
+  command = ""
+
+# Identity redirect — required for the OAuth callback to work
+[[redirects]]
+  from  = "/admin/"
+  to    = "/admin/index.html"
+  status = 200
+
+# Serve data JSON with correct headers so fetch() works cross-origin
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache"

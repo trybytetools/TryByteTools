@@ -1,0 +1,8 @@
+{
+  "id": "pl001",
+  "title": "Scene Sticky Notes",
+  "type": "update",
+  "version": "0.1.0",
+  "desc": "Play-in-scene sticky notes for 2D & 3D editors. Organize notes, pass tasks to teammates, or leave breadcrumbs for your next session.",
+  "patchNotesUrl": ""
+}

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#010814"/>
+      <stop offset="1" stop-color="#020c1e"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3d9eff"/>
+      <stop offset="1" stop-color="#00baff"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid dots -->
+  <pattern id="dots" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="1" fill="rgba(61,158,255,0.14)"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Glow blobs -->
+  <ellipse cx="200" cy="160" rx="340" ry="220" fill="rgba(29,78,216,0.18)" filter="url(#glow)"/>
+  <ellipse cx="1050" cy="500" rx="280" ry="200" fill="rgba(0,186,255,0.12)" filter="url(#glow)"/>
+
+  <!-- Hex mark -->
+  <polygon points="120,80 170,52 220,80 220,136 170,164 120,136"
+    fill="url(#cyan)" opacity="0.9"/>
+  <text x="170" y="120" text-anchor="middle" font-family="monospace"
+    font-weight="900" font-size="44" fill="#020a14">B</text>
+
+  <!-- Studio name -->
+  <text x="260" y="118" font-family="monospace" font-weight="700"
+    font-size="14" fill="#7dc8ff" letter-spacing="3">TRY BYTE TOOLS</text>
+
+  <!-- Divider -->
+  <line x1="100" y1="218" x2="1100" y2="218" stroke="rgba(61,158,255,0.2)" stroke-width="1"/>
+
+  <!-- Main headline -->
+  <text x="100" y="330" font-family="Arial Black, sans-serif" font-weight="900"
+    font-size="86" fill="#ddeeff" letter-spacing="-3">Real Devs,</text>
+  <text x="100" y="430" font-family="Arial Black, sans-serif" font-weight="900"
+    font-size="86" fill="url(#cyan)" letter-spacing="-3">Real Code.</text>
+
+  <!-- Tagline -->
+  <text x="100" y="510" font-family="monospace" font-size="18"
+    fill="#6a8eaa" letter-spacing="1">Unity tools · Games · 3D Assets</text>
+
+  <!-- URL -->
+  <text x="100" y="578" font-family="monospace" font-size="14"
+    fill="rgba(61,158,255,0.5)" letter-spacing="1">trybytetools.github.io/TryByteTools</text>
+</svg>
