@@ -142,20 +142,26 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════
-   CURSOR — dot only, no trailing ring
+   CURSOR — smooth glowing blue dot, no ring
 ══════════════════════════════════════════════════════ */
 #cur {
   position: fixed;
-  width: 6px; height: 6px;
-  background: rgba(255,255,255,0.9);
+  width: 10px; height: 10px;
+  background: var(--cyan);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%,-50%);
   z-index: 9999;
   will-change: left, top;
-  mix-blend-mode: exclusion;
-  transition: opacity .2s, transform .1s;
+  box-shadow:
+    0 0 8px  var(--cyan),
+    0 0 18px rgba(0,186,255,0.6),
+    0 0 36px rgba(0,186,255,0.25);
+  transition: opacity .2s, width .15s var(--ease-expo), height .15s var(--ease-expo);
 }
+/* Grow slightly on hover */
+body:has(a:hover) #cur,
+body:has(button:hover) #cur { width: 16px; height: 16px; }
 
 /* ═══════════════════════════════════════════════════
    NAVIGATION
@@ -1146,13 +1152,9 @@ footer {
 
 <!-- ════════════════════════════════════════════════════
      BACKGROUND VIDEO
-     Replace /assets/bg.mp4 with your own looping video.
-     Tips for a seamless loop:
-       • Keep it under 10s — shorter loops are smoother
-       • Remove audio before exporting
-       • Export at 1080p or 1440p for crisp result
-       • Also export a .webm version (smaller file size)
-     Recommended free sources: Pexels, Pixabay, Coverr
+     Drop your looping video as assets/bg.mp4
+     Tip: keep under 20s, no audio, export at 1080p
+     Free sources: Pexels, Pixabay, Coverr
 ═════════════════════════════════════════════════════ -->
 <video id="bg-video" autoplay muted loop playsinline>
   <source src="assets/bg.webm" type="video/webm" />
@@ -1370,94 +1372,13 @@ footer {
 </div>
 
 <!-- ════════════════════════════════════════════════════
-     DATA — managed by Decap CMS at /admin/
-     CMS writes individual JSON files into /data/
-     This loader fetches them; falls back to defaults
-     when running locally without a server.
+     DATA — edit via admin.py, never touch this by hand
+     admin.py rewrites the block between TBT:DATA markers
 ═════════════════════════════════════════════════════ -->
 <script>
-/* ─────────────────────────────────────────────────────
-   DEFAULTS — used when JSON files can't be fetched
-   (e.g. local file:// preview, first deploy before CMS)
-───────────────────────────────────────────────────── */
-const DEFAULTS = {
-  settings: { studioName:"Try Byte Tools", email:"TryByteTools@gmail.com", siteUrl:"https://trybytetools.github.io/TryByteTools/", tagline:"A small team that just wants to build cool stuff together." },
-  projects: [
-    { id:"001", title:"Folder Icons", category:"unity", tagLabel:"Unity Tool", status:"wip", author:"Dminx", version:"1.0.0", desc:"Right-click any folder in the Unity Project window to assign a custom color or icon. GUID-based persistence, zero runtime cost, easily importable.", links:[{label:"Asset Store",href:"#",icon:"store"}], patchNotes:[{version:"0.9.9",date:"2026-03-10",notes:"Waiting on release on the Unity Asset Store."}] },
-    { id:"002", title:"Scene Sticky Notes", category:"unity", tagLabel:"Unity Tool", status:"wip", author:"Dminx", version:"0.1.0", desc:"Play-in-scene sticky notes for 2D & 3D editors. Organize notes, pass tasks to teammates, or set up reminders for your next coding session.", links:[], patchNotes:[{version:"0.1.0",date:"2026-03-10",notes:"Created the sticky note package — needs polishing before release."}] },
-    { id:"003", title:"Unity Inspector Refresh Fix", category:"unity", tagLabel:"Unity Tool", status:"live", author:"Dminx", version:"1.0.0", desc:"Fixes an issue in Unity 6.3 where the Inspector doesn't show the selected object or file. Confirmed working on Cosmic OS.", links:[{label:"GitHub",href:"https://github.com/trybytetools/Unity-Inspector-Refresh-Fix-COSMIC-OS/tree/main",icon:"github"}], patchNotes:[{version:"1.0.0",date:"2026-03-10",notes:"Initial release. Uploaded to GitHub."}] }
-  ],
-  pipeline: [
-    { id:"pl001", title:"Scene Sticky Notes", type:"update", version:"0.1.0", desc:"Play-in-scene sticky notes for 2D & 3D editors. Organize notes, pass tasks to teammates, or leave breadcrumbs for your next session.", patchNotesUrl:"" }
-  ],
-  team: [
-    { id:"t001",  name:"Dminx", role:"Solo Dev",    avatar:"" },
-    { id:"t1002", name:"Robix", role:"Inspiration", avatar:"" }
-  ]
-};
-
-/* live DATA object — mutated by loadData() before any render */
-let DATA = JSON.parse(JSON.stringify(DEFAULTS));
-
-/* ─────────────────────────────────────────────────────
-   DATA LOADER
-   Fetches each JSON file written by Decap CMS.
-   New projects/pipeline/team members you add in the CMS
-   appear as new files in /data/projects/*.json etc.
-   This loader fetches a manifest index first, then each
-   individual file. On any failure it keeps DEFAULTS.
-───────────────────────────────────────────────────── */
-async function loadData() {
-  // Only attempt fetching over HTTP(S) — not file://
-  if (!location.protocol.startsWith('http')) return;
-
-  const root = location.origin + location.pathname.replace(/\/[^/]*$/, '');
-
-  async function fetchJSON(path) {
-    try {
-      const r = await fetch(root + path, { cache: 'no-cache' });
-      return r.ok ? r.json() : null;
-    } catch { return null; }
-  }
-
-  // --- Settings (single file) ---
-  const settings = await fetchJSON('/data/settings.json');
-  if (settings) DATA.settings = settings;
-
-  // --- Collections: load known filenames + any listed in an index ---
-  // Known filenames match what the CMS slug pattern generates.
-  // When you add new entries via CMS, add their filenames to these arrays,
-  // OR add a data/index.json file (see README for format).
-  const projectFiles  = ['001','002','003'];
-  const pipelineFiles = ['pl001'];
-  const teamFiles     = ['t001','t1002'];
-
-  // Try loading a manifest so new CMS entries auto-appear without code edits
-  const idx = await fetchJSON('/data/index.json');
-  if (idx) {
-    if (idx.projects)  projectFiles.push(...idx.projects.filter(f=>!projectFiles.includes(f)));
-    if (idx.pipeline)  pipelineFiles.push(...idx.pipeline.filter(f=>!pipelineFiles.includes(f)));
-    if (idx.team)      teamFiles.push(...idx.team.filter(f=>!teamFiles.includes(f)));
-  }
-
-  const [projects, pipeline, team] = await Promise.all([
-    Promise.all(projectFiles.map(f  => fetchJSON(`/data/projects/${f}.json`))),
-    Promise.all(pipelineFiles.map(f => fetchJSON(`/data/pipeline/${f}.json`))),
-    Promise.all(teamFiles.map(f     => fetchJSON(`/data/team/${f}.json`))),
-  ]);
-
-  const CAT_LABEL = { unity:'Unity Tool', game:'Game', web:'Web', python:'Python', android:'Android', ai:'AI' };
-
-  const validProjs = projects.filter(Boolean);
-  if (validProjs.length) {
-    DATA.projects = validProjs;
-    DATA.projects.forEach(p => { if (!p.tagLabel) p.tagLabel = CAT_LABEL[p.category] || p.category; });
-  }
-  const validPipes = pipeline.filter(Boolean);
-  if (validPipes.length) DATA.pipeline = validPipes;
-  const validTeam  = team.filter(Boolean);
-  if (validTeam.length)  DATA.team = validTeam;
-}
+/* TBT:DATA:START */
+const DATA = {"settings":{"studioName":"Try Byte Tools","email":"TryByteTools@gmail.com","siteUrl":"https://trybytetools.github.io/TryByteTools/","tagline":"A small team that just wants to build cool stuff together."},"projects":[{"id":"001","title":"Folder Icons","category":"unity","tagLabel":"Unity Tool","status":"wip","author":"Dminx","version":"1.0.0","desc":"Right-click any folder in the Unity Project window to assign a custom color or icon. GUID-based persistence, zero runtime cost, easily importable.","links":[{"label":"Asset Store","href":"#","icon":"store"}],"patchNotes":[{"version":"0.9.9","date":"2026-03-10","notes":"Waiting on release on the Unity Asset Store."}]},{"id":"002","title":"Scene Sticky Notes","category":"unity","tagLabel":"Unity Tool","status":"wip","author":"Dminx","version":"0.1.0","desc":"Play-in-scene sticky notes for 2D & 3D editors. Organize notes, pass tasks to teammates, or set reminders.","links":[],"patchNotes":[{"version":"0.1.0","date":"2026-03-10","notes":"Created the sticky note package — needs polishing before release."}]},{"id":"003","title":"Unity Inspector Refresh Fix","category":"unity","tagLabel":"Unity Tool","status":"live","author":"Dminx","version":"1.0.0","desc":"Fixes an issue in Unity 6.3 where the Inspector does not show the selected object. Confirmed working on Cosmic OS.","links":[{"label":"GitHub","href":"https://github.com/trybytetools/Unity-Inspector-Refresh-Fix-COSMIC-OS/tree/main","icon":"github"}],"patchNotes":[{"version":"1.0.0","date":"2026-03-10","notes":"Initial release. Uploaded to GitHub."}]}],"pipeline":[{"id":"pl001","title":"Scene Sticky Notes","type":"update","version":"0.1.0","desc":"Play-in-scene sticky notes for 2D & 3D editors."}],"team":[{"id":"t001","name":"Dminx","role":"Solo Dev","avatar":""},{"id":"t1002","name":"Robix","role":"Inspiration","avatar":""}]};
+/* TBT:DATA:END */
 
 /* ─────────────────────────────────────────────────────
    CURSOR
@@ -1489,13 +1410,31 @@ async function loadData() {
   setTimeout(() => { clearInterval(fill); loader.classList.add('done'); }, 3000);
 })();
 
-/* ─── Cursor ─── */
+/* ─── Cursor — smooth lerp, glowing blue ─── */
 (function() {
   const dot = document.getElementById('cur');
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+  let raf;
+
   document.addEventListener('mousemove', e => {
-    dot.style.left = e.clientX + 'px';
-    dot.style.top  = e.clientY + 'px';
+    tx = e.clientX; ty = e.clientY;
+    if (!raf) raf = requestAnimationFrame(step);
   }, { passive: true });
+
+  function step() {
+    // Lerp — 0.18 = slightly behind, feels smooth not laggy
+    cx += (tx - cx) * 0.18;
+    cy += (ty - cy) * 0.18;
+    dot.style.left = cx + 'px';
+    dot.style.top  = cy + 'px';
+    // Keep animating while there's still distance to close
+    if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
+      raf = requestAnimationFrame(step);
+    } else {
+      raf = null;
+    }
+  }
+
   document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
   document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; });
 })();
@@ -1907,19 +1846,12 @@ function renderContact() {
 /* ─────────────────────────────────────────────────────
    BOOT
 ───────────────────────────────────────────────────── */
-document.getElementById('footer-year').textContent = new Date().getFullYear();
-
-
 /* ─────────────────────────────────────────────────────
-   ASYNC BOOT — fetch CMS data, then render everything
+   BOOT — data is baked into DATA above by admin.py
 ───────────────────────────────────────────────────── */
-(async function boot() {
+(function boot() {
   document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-  // Load data from /data/ JSON files (or use DEFAULTS on failure)
-  await loadData();
-
-  // Render all sections
   renderPipeline();
   renderProjects('all');
   renderChangelogSidebar();
@@ -1928,7 +1860,6 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   renderStats();
   renderContact();
 
-  // After DOM is populated, wire up reveal observers + interactions
   requestAnimationFrame(() => {
     const obs = new IntersectionObserver(entries => {
       entries.forEach(en => {
@@ -1939,7 +1870,6 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
 
     initSpotlight('.pcard');
 
-    // Magnetic buttons — wire all .mag-btn elements rendered by CMS data
     document.querySelectorAll('.mag-btn').forEach(btn => {
       btn.addEventListener('mousemove', e => {
         const r = btn.getBoundingClientRect();
