@@ -9,7 +9,7 @@ backend:
   # Found at: Netlify dashboard → Site settings → General → Site information → Site name
   # e.g. if your Netlify URL is  https://trybytetools.netlify.app
   # then site_domain is:         trybytetools.netlify.app
-  site_domain: boisterous-starship-a1d8ae.netlify.app
+  site_domain: trybytetools.netlify.app
 
 # Uncomment to test locally without auth:
 # local_backend: true
