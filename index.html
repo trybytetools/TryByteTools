@@ -1409,7 +1409,8 @@ const DATA = {"settings":{"studioName":"Try Byte Tools","email":"TryByteTools@gm
   // Hard timeout — never block the page past 3s
   setTimeout(() => { clearInterval(fill); loader.classList.add('done'); }, 3000);
 })();
-
+/* Sets the playback speed of the video to 0.8x for a more cinematic feel. Adjust as needed. */
+document.getElementById('bg-video').playbackRate = 0.8;
 /* ─── Cursor — smooth lerp, glowing blue ─── */
 (function() {
   const dot = document.getElementById('cur');
