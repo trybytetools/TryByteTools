@@ -427,23 +427,76 @@ body:has(button:hover) #cur { width: 16px; height: 16px; }
 
 .terminal {
   width: 100%; max-width: 480px;
-  background: rgba(5,14,32,0.44);
+  position: relative;
+  background: linear-gradient(180deg, rgba(125,200,255,0.09) 0%, rgba(5,14,32,0.40) 26%, rgba(5,14,32,0.28) 100%);
   border: 1px solid rgba(61,158,255,0.22);
-  border-radius: var(--radius-xl);
+  border-radius: calc(var(--radius-xl) + 8px);
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgba(0,186,255,0.07) inset,
     inset 0 1px 0 rgba(255,255,255,0.07),
-    0 24px 80px rgba(0,0,0,0.6),
+    0 30px 100px rgba(0,0,0,0.62),
     0 0 60px rgba(0,186,255,0.05);
-  animation: float 6s ease-in-out infinite;
   backdrop-filter: blur(24px) saturate(1.5);
   -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  touch-action: pan-y;
+  transform: perspective(1000px) rotateX(7deg) rotateY(-10deg);
+  transform-origin: center 75%;
+  transition: transform .35s var(--ease-smooth), box-shadow .35s var(--ease-smooth), border-color .35s var(--ease-smooth);
 }
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-12px); }
+
+.terminal::before {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 15% 0%, rgba(125,200,255,0.35), rgba(125,200,255,0) 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0) 30%),
+    linear-gradient(90deg, rgba(0,186,255,0.12), rgba(0,186,255,0) 60%);
+  opacity: 0.9;
+  mix-blend-mode: screen;
 }
+
+.terminal::after {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 38%, rgba(0,186,255,0.10) 100%);
+  opacity: 0.55;
+}
+
+.terminal-next {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(61,158,255,0.40);
+  background: rgba(4,11,20,0.55);
+  backdrop-filter: blur(18px) saturate(2.0);
+  -webkit-backdrop-filter: blur(18px) saturate(2.0);
+  color: var(--cyan);
+  box-shadow:
+    0 18px 60px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(0,186,255,0.08) inset;
+  cursor: none;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  transition: transform .2s var(--ease-expo), border-color .2s var(--ease-expo), box-shadow .2s var(--ease-expo), opacity .2s var(--ease-expo);
+}
+.terminal-next:hover {
+  transform: scale(1.06);
+  border-color: rgba(0,186,255,0.70);
+  box-shadow:
+    0 22px 70px rgba(0,0,0,0.42),
+    0 0 0 1px rgba(0,186,255,0.16) inset;
+}
+.terminal-next:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
 
 .terminal-bar {
   display: flex; align-items: center; gap: 0.55rem;
@@ -987,7 +1040,7 @@ footer {
 ══════════════════════════════════════════════════════ */
 #section-dots {
   position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
-  z-index: 600; display: flex; flex-direction: column; gap: 10px;
+  z-index: 600; display: none;
 }
 .s-dot {
   width: 6px; height: 6px; border-radius: 50%;
@@ -1059,7 +1112,8 @@ footer {
 }
 @media (max-width: 768px) {
   #home { grid-template-columns: 1fr; padding-top: calc(var(--nav-h) + 4rem); }
-  .hero-right { display: none; }
+  .hero-right { display: flex; justify-content: center; align-items: center; margin-top: 2.25rem; }
+  .terminal { transform: none; border-radius: var(--radius-xl); }
   .bento { grid-template-columns: 1fr; }
   .bento-item.wide { grid-column: span 1; }
   .changelog-layout { grid-template-columns: 1fr; }
@@ -1235,6 +1289,7 @@ footer {
         <div class="tl"><span class="tl-num">9</span><span class="tl-code">&nbsp;&nbsp;&nbsp;&nbsp;.<span class="t-fn">RepaintProjectWindow</span><span class="t-op">();</span></span></div>
         <div class="tl"><span class="tl-num">10</span><span class="tl-code"><span class="t-op">}</span><span class="t-cursor"></span></span></div>
       </div>
+      <button class="terminal-next" id="terminal-next" type="button" aria-label="Go to Pipeline section">→</button>
     </div>
   </div>
 
@@ -1471,16 +1526,7 @@ document.getElementById('bg-video').playbackRate = 0.8;
 (function() {
   const nav     = document.getElementById('nav');
   const navLinks= nav.querySelectorAll('.nav-links a, .nav-drawer a');
-  const sDots   = document.querySelectorAll('.s-dot');
   const SECS    = ['home','pipeline','projects','changelog','about','contact'];
-
-  // Section dot click → smooth scroll
-  sDots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const el = document.getElementById(dot.dataset.target);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
 
   // Timeline line observer
   const tlEl = document.getElementById('timeline');
@@ -1488,6 +1534,49 @@ document.getElementById('bg-video').playbackRate = 0.8;
     new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) tlEl.classList.add('line-in'); });
     }, { threshold: 0.08 }).observe(tlEl);
+  }
+
+  // Terminal: next section button + swipe-left gesture
+  const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+  const terminalEl = document.querySelector('.terminal');
+  const terminalNextBtn = document.getElementById('terminal-next');
+  let navigating = false;
+
+  function goToPipeline() {
+    if (navigating) return;
+    const el = document.getElementById('pipeline');
+    if (!el) return;
+    navigating = true;
+    el.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+    setTimeout(() => { navigating = false; }, 650);
+  }
+
+  if (terminalNextBtn) terminalNextBtn.addEventListener('click', goToPipeline);
+
+  if (terminalEl) {
+    let sx = 0;
+    let sy = 0;
+    let startTs = 0;
+
+    terminalEl.addEventListener('touchstart', (e) => {
+      if (!e.touches || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      sx = t.clientX;
+      sy = t.clientY;
+      startTs = Date.now();
+    }, { passive: true });
+
+    terminalEl.addEventListener('touchend', (e) => {
+      if (!startTs || !e.changedTouches || e.changedTouches.length !== 1) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - sx;
+      const dy = t.clientY - sy;
+      startTs = 0;
+
+      // Swipe-left: dominant horizontal gesture
+      if (dx < -70 && Math.abs(dy) < 95) goToPipeline();
+    }, { passive: true });
   }
 
   window.addEventListener('scroll', () => {
@@ -1503,9 +1592,6 @@ document.getElementById('bg-video').playbackRate = 0.8;
 
     navLinks.forEach(a => {
       a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-    });
-    sDots.forEach(d => {
-      d.classList.toggle('active', d.dataset.target === current);
     });
   }, { passive: true });
 
