@@ -1,0 +1,134 @@
+{
+  "pipeline": [
+    {
+      "desc": "Play in scene sticky notes 2D or 3D editors, helps organize and pass notes along to the team or maybe set notes up for next your coding session.",
+      "id": "pl1773173592454",
+      "patchNotesUrl": "",
+      "title": "Scene Sticky Notes",
+      "type": "update",
+      "version": "0.1.0"
+    }
+  ],
+  "projects": [
+    {
+      "author": "Dminx",
+      "category": "unity",
+      "desc": "Right-click any folder in the Unity Project window to assign a custom color or icon. GUID-based persistence, zero runtime cost, easily import.",
+      "id": "001",
+      "links": [
+        {
+          "href": "#",
+          "icon": "store",
+          "label": "Asset Store"
+        }
+      ],
+      "patchNotes": [
+        {
+          "date": "2026-03-10",
+          "notes": "Waiting on the release on Unity Asset Store.",
+          "version": "0.9.9"
+        }
+      ],
+      "revenue": "$14.99",
+      "status": "wip",
+      "tagClass": "ptag-unity",
+      "tagLabel": "Unity Tool",
+      "title": "Folder Icons",
+      "version": "1.0.0"
+    },
+    {
+      "author": "Dminx",
+      "category": "unity",
+      "desc": "Play in scene sticky notes 2D or 3D editors, helps organize and pass notes along to the team or maybe set notes up for next your coding session.",
+      "id": "002",
+      "links": [],
+      "patchNotes": [
+        {
+          "date": "2026-03-10",
+          "notes": "Created the sticky note package but it needs polishing. Wasn't sure what to say for the verison.",
+          "version": "0.1.0"
+        }
+      ],
+      "revenue": "Free",
+      "status": "wip",
+      "tagClass": "ptag-unity",
+      "tagLabel": "Unity Tool",
+      "title": "Scene Sticky Notes",
+      "version": "0.1.0"
+    },
+    {
+      "author": "Dminx",
+      "category": "unity",
+      "desc": "This tool will fix an issue that is causing the inspector to not show which object or file you selected in the Unity Editor. Unity Version 6.3. This  works on Cosmic OS, it may work on other operating systems potentially.",
+      "id": "003",
+      "links": [
+        {
+          "href": "#https://github.com/trybytetools/Unity-Inspector-Refresh-Fix-COSMIC-OS/tree/main",
+          "icon": "store",
+          "label": "Github"
+        }
+      ],
+      "patchNotes": [
+        {
+          "date": "2026-03-10",
+          "notes": "Uploaded",
+          "version": "1.0.0"
+        }
+      ],
+      "revenue": "Free",
+      "status": "live",
+      "tagClass": "ptag-unity",
+      "tagLabel": "Unity Tool",
+      "title": "Unity Refresh Inspector Fix",
+      "version": "1.0.0"
+    },
+    {
+      "author": "Dminx",
+      "category": "unity",
+      "desc": "Create custom script templates for Unity to",
+      "id": "004",
+      "links": [],
+      "patchNotes": [],
+      "revenue": "$15.00",
+      "status": "archived",
+      "tagClass": "ptag-unity",
+      "tagLabel": "Unity Tool",
+      "title": "Script Template",
+      "version": ""
+    },
+    {
+      "author": "Dminx",
+      "category": "game",
+      "desc": "Solve a progressively harder puzzle each time you solve the 3x3 matrix.",
+      "id": "002",
+      "links": [],
+      "patchNotes": [],
+      "revenue": "$4.99",
+      "status": "archived",
+      "tagClass": "ptag-game",
+      "tagLabel": "Game",
+      "title": "Cube Solver",
+      "version": "0.1"
+    }
+  ],
+  "settings": {
+    "email": "TryByteTools@gmail.com",
+    "siteUrl": "https://trybytetools.github.io/TryByteTools/",
+    "studioName": "Try Byte Tools",
+    "tagline": "A small team that just wants to build cool stuff together."
+  },
+  "team": [
+    {
+      "avatar": "",
+      "id": "t001",
+      "name": "Dminx",
+      "role": "Solo Dev"
+    },
+    {
+      "avatar": "",
+      "id": "t1773173222505",
+      "name": "Robix",
+      "role": "Inspiration"
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Try Byte Tools — Indie studio building Unity tools, games, and 3D assets.">
+  <meta name="theme-color" content="#010610">
+  <link rel="canonical" href="https://trybytetools.github.io/TryByteTools/">
+  <meta property="og:title" content="Try Byte Tools"><meta property="og:description" content="A small indie studio building Unity tools, games, and 3D assets.">
+  <meta property="og:url" content="https://trybytetools.github.io/TryByteTools/"><meta property="og:type" content="website">
+  <meta property="og:image" content="https://trybytetools.github.io/TryByteTools/assets/og.png"><meta property="og:site_name" content="Try Byte Tools">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Try Byte Tools">
+  <meta name="twitter:description" content="A small indie studio building Unity tools, games, and 3D assets."><meta name="twitter:image" content="https://trybytetools.github.io/TryByteTools/assets/og.png">
+  <title>Try Byte Tools — Indie Studio</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233d9eff'/%3E%3Cstop offset='1' stop-color='%2300baff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='16,2 28,9 28,23 16,30 4,23 4,9' fill='url(%23g)'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-weight='900' font-size='14' fill='%23020a14'%3EB%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+<div id="loader"><div class="loader-brand"><div class="loader-dot"></div>TRY BYTE TOOLS</div><div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div></div>
+<div id="section-dots">
+  <div class="s-dot active" data-target="home" data-label="Home"></div><div class="s-dot" data-target="pipeline" data-label="Pipeline"></div>
+  <div class="s-dot" data-target="projects" data-label="Projects"></div><div class="s-dot" data-target="changelog" data-label="Changelog"></div>
+  <div class="s-dot" data-target="about" data-label="About"></div><div class="s-dot" data-target="contact" data-label="Contact"></div>
+</div>
+<div id="cur"></div>
+<video id="bg-video" autoplay muted loop playsinline><source src="assets/bg.webm" type="video/webm"><source src="assets/bg.mp4" type="video/mp4"></video>
+<div id="glass-tint"></div><div id="glass-frost"></div>
+<nav id="nav">
+  <ul class="nav-links">
+    <li><a href="#home" class="active">Home</a></li><li><a href="#pipeline">Pipeline</a></li><li><a href="#projects">Projects</a></li>
+    <li><a href="#changelog">Updates</a></li><li><a href="#about">About</a></li><li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+  <a href="#home">Home</a><a href="#projects">Projects</a><a href="#changelog">Updates</a><a href="#about">About</a><a href="#contact">Contact</a>
+</div>
+<main id="main-content" role="main">
+<section id="home" aria-label="Hero">
+  <div class="glass-panel">
+    <div class="hero-label"><span class="hero-label-pill">Indie Studio</span> Unity Tools · Games · 3D Assets</div>
+    <h1 class="hero-title" id="hero-title"><span class="line">Try</span><span class="line gradient-text">Byte</span><span class="line">Tools</span></h1>
+    <p class="hero-sub">Just a dev who loves building cool stuff and wants to share it with the world.</p>
+    <div class="hero-btns"><a href="#projects" class="btn-primary mag-btn"><span>Browse Projects →</span></a></div>
+  </div>
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="terminal-bar"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div><span class="terminal-filename">FolderIconEditor.cs</span><span class="terminal-badge">C#</span></div>
+      <div class="terminal-body">
+        <div class="tl"><span class="tl-num">1</span><span class="tl-code t-cm">// Right-click any folder → assign icon</span></div>
+        <div class="tl"><span class="tl-num">2</span><span class="tl-code"><span class="t-op">[</span><span class="t-cls">MenuItem</span><span class="t-op">(</span><span class="t-str">"Assets/Folder Icons"</span><span class="t-op">)]</span></span></div>
+        <div class="tl"><span class="tl-num">3</span><span class="tl-code"><span class="t-kw">static void</span> <span class="t-fn">AssignColor</span><span class="t-op">() {</span></span></div>
+        <div class="tl"><span class="tl-num">4</span><span class="tl-code">&nbsp;&nbsp;<span class="t-kw">var</span> <span class="t-nm">guid</span> = <span class="t-cls">AssetDatabase</span>.<span class="t-fn">AssetPathToGUID</span><span class="t-op">(</span><span class="t-nm">path</span><span class="t-op">);</span></span></div>
+        <div class="tl"><span class="tl-num">5</span><span class="tl-code">&nbsp;&nbsp;<span class="t-cls">FolderIconData</span>.<span class="t-fn">Set</span><span class="t-op">(</span><span class="t-nm">guid</span><span class="t-op">,</span> <span class="t-nm">selectedColor</span><span class="t-op">);</span></span></div>
+        <div class="tl"><span class="tl-num">6</span><span class="tl-code">&nbsp;&nbsp;<span class="t-cls">EditorApplication</span>.<span class="t-fn">RepaintProjectWindow</span><span class="t-op">();</span></span></div>
+        <div class="tl"><span class="tl-num">7</span><span class="tl-code"><span class="t-op">}</span><span class="t-cursor"></span></span></div>
+      </div>
+      <button class="terminal-next" id="terminal-next" type="button" aria-label="Go to Pipeline section">→</button>
+    </div>
+  </div>
+</section>
+<section class="section" id="pipeline" aria-label="Pipeline">
+  <div class="pipeline-grid">
+    <div class="glass-panel">
+      <h2 class="section-heading reveal delay-1">What's<br><span class="accent">Coming</span></h2>
+      <p class="section-sub reveal delay-2">Every tool in motion — from early concept to release. Updated as we plan and ship.</p>
+      <div class="pipeline-list reveal delay-3" id="pipeline-list"></div>
+    </div>
+    <div class="pipeline-cta reveal delay-2">
+      <h3>Built by <span class="accent">real devs</span>,<br>for real devs.</h3>
+      <p>Every tool we build solves a problem we've actually hit. No fluff, no feature bloat — just focused utilities that do one thing very well.</p>
+      <a href="#projects" class="btn-primary mag-btn" style="display:inline-block"><span>See All Projects →</span></a>
+    </div>
+  </div>
+</section>
+<section class="section" id="projects" aria-label="Projects">
+  <div class="glass-panel">
+    <div><h2 class="section-heading reveal delay-1">Everything<br><span class="accent">We Build</span></h2></div>
+    <div class="reveal delay-2">
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="f-tab active" data-filter="all">All</button><button class="f-tab" data-filter="live">Live</button>
+        <button class="f-tab" data-filter="wip">In Dev</button><button class="f-tab" data-filter="idea">Ideas</button>
+      </div>
+    </div>
+  </div>
+  <div class="bento reveal delay-2" id="bento-grid"></div>
+</section>
+<section class="section" id="changelog" aria-label="Changelog">
+  <div class="glass-panel">
+    <h2 class="section-heading reveal delay-1">Change<span class="accent">log</span></h2>
+    <p class="section-sub reveal delay-2">Every patch, fix, and release across all projects — newest first.</p>
+  </div>
+  <div class="glass-panel changelog-layout reveal delay-3">
+    <div class="cl-sidebar"><div class="cl-sidebar-title">Filter by project</div><div class="cl-proj-list" id="cl-proj-list"></div></div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+<section class="section" id="about" aria-label="About">
+  <div class="about-grid">
+    <div class="about-copy glass-panel reveal delay-1">
+      <h2 class="section-heading" style="margin-bottom:1.5rem;">Real Devs,<br><span class="accent">Real Code</span></h2>
+      <p><strong>Try Byte Tools</strong> started as an idea from a developer who wanted to build something useful.</p>
+      <p>We work on whatever's interesting: Unity tools, games, 3D assets, web projects. Just <em>developers who want to ship their ideas</em> and attempt to make a living doing it.</p>
+      <p>The goal is to create tools that are actually useful and solve real problems while embracing the random projects that we brainstorm.</p>
+      <div class="stats-row" id="stats-row"></div>
+    </div>
+    <div class="reveal delay-2"><div class="team-cards" id="team-grid"></div></div>
+  </div>
+</section>
+<section class="section" id="contact" aria-label="Contact">
+  <div class="glass-panel">
+    <h2 class="section-heading reveal delay-1">Let's <span class="accent">Talk</span></h2>
+    <p class="section-sub reveal delay-2">Bug report, project idea, tool request, or just phishing, we'd love to hear from you!</p>
+  </div>
+  <div class="contact-split reveal delay-3">
+    <div class="contact-left" id="contact-links"></div>
+    <div class="contact-right">
+      <div class="contact-note-title">From the team</div>
+      <p>Every message gets read by an actual person. No bots, no ticket queues.</p>
+      <p>Got a project idea? Want to join the team? Found a bug? We want to hear all of it. The studio grows because people reach out.</p>
+      <p class="highlight">That's literally how this works.</p>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <span class="footer-copy">© <span id="footer-year"></span> <span class="accent">Try Byte Tools</span>.</span>
+  <nav class="footer-links"><a href="#home">Home</a><a href="#projects">Projects</a><a href="#changelog">Changelog</a><a href="#contact">Contact</a></nav>
+</footer>
+<div class="modal-overlay" id="patch-modal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="patch-modal-title">Patch Notes</div><button class="modal-close" id="patch-modal-close">✕</button></div>
+    <div class="modal-body" id="patch-modal-body"></div>
+  </div>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
