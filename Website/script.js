@@ -1,5 +1,57 @@
 /* TBT:DATA:START */
-const DATA = {"settings":{"studioName":"Try Byte Tools","email":"TryByteTools@gmail.com","siteUrl":"https://trybytetools.github.io/TryByteTools/","tagline":"A small team that just wants to build cool stuff together."},"projects":[{"id":"001","title":"Folder Icons","category":"unity","tagLabel":"Unity Tool","status":"wip","author":"Dminx","version":"1.0.0","desc":"Right-click any folder in the Unity Project window to assign a custom color or icon. GUID-based persistence, zero runtime cost, easily importable.","links":[{"label":"Asset Store","href":"#","icon":"store"}],"patchNotes":[{"version":"0.9.9","date":"2026-03-10","notes":"Waiting on release on the Unity Asset Store."}]},{"id":"002","title":"Scene Sticky Notes","category":"unity","tagLabel":"Unity Tool","status":"wip","author":"Dminx","version":"0.1.0","desc":"Play-in-scene sticky notes for 2D & 3D editors. Organize notes, pass tasks to teammates, or set reminders.","links":[],"patchNotes":[{"version":"0.1.0","date":"2026-03-10","notes":"Created the sticky note package — needs polishing before release."}]},{"id":"003","title":"Unity Inspector Refresh Fix","category":"unity","tagLabel":"Unity Tool","status":"live","author":"Dminx","version":"1.0.0","desc":"Fixes an issue in Unity 6.3 where the Inspector does not show the selected object. Confirmed working on Cosmic OS.","links":[{"label":"GitHub","href":"https://github.com/trybytetools/Unity-Inspector-Refresh-Fix-COSMIC-OS/tree/main","icon":"github"}],"patchNotes":[{"version":"1.0.0","date":"2026-03-10","notes":"Initial release. Uploaded to GitHub."}]}],"pipeline":[{"id":"pl001","title":"Scene Sticky Notes","type":"update","version":"0.1.0","desc":"Play-in-scene sticky notes for 2D & 3D editors."}],"team":[{"id":"t001","name":"Dminx","role":"Solo Dev","avatar":""},{"id":"t1002","name":"Robix","role":"Inspiration","avatar":""}]};
+const DATA = {
+  "settings": {
+    "studioName": "Try Byte Tools",
+    "email": "TryByteTools@gmail.com",
+    "siteUrl": "https://trybytetools.github.io/TryByteTools/",
+    "tagline": "A small team that just wants to build cool stuff together."
+  },
+  "projects": [
+    {
+      "id": "001",
+      "title": "Folder Icons",
+      "category": "unity",
+      "tagLabel": "Unity Tool",
+      "status": "wip",
+      "author": "Dminx",
+      "version": "1.0.0",
+      "desc": "Right-click any folder in the Unity Project window to assign a custom color or icon. GUID-based persistence, zero runtime cost, easily importable.",
+      "links": [{"label": "Asset Store", "href": "#", "icon": "store"}],
+      "patchNotes": [{"version": "0.9.9", "date": "2026-03-10", "notes": "Waiting on release on the Unity Asset Store."}]
+    },
+    {
+      "id": "002",
+      "title": "Scene Sticky Notes",
+      "category": "unity",
+      "tagLabel": "Unity Tool",
+      "status": "wip",
+      "author": "Dminx",
+      "version": "0.1.0",
+      "desc": "Play-in-scene sticky notes for 2D & 3D editors. Organize notes, pass tasks to teammates, or set reminders.",
+      "links": [],
+      "patchNotes": [{"version": "0.1.0", "date": "2026-03-10", "notes": "Created the sticky note package — needs polishing before release."}]
+    },
+    {
+      "id": "003",
+      "title": "Unity Inspector Refresh Fix",
+      "category": "unity",
+      "tagLabel": "Unity Tool",
+      "status": "live",
+      "author": "Dminx",
+      "version": "1.0.0",
+      "desc": "Fixes an issue in Unity 6.3 where the Inspector does not show the selected object. Confirmed working on Cosmic OS.",
+      "links": [{"label": "GitHub", "href": "https://github.com/trybytetools/Unity-Inspector-Refresh-Fix-COSMIC-OS/tree/main", "icon": "github"}],
+      "patchNotes": [{"version": "1.0.0", "date": "2026-03-10", "notes": "Initial release. Uploaded to GitHub."}]
+    }
+  ],
+  "pipeline": [
+    {"id": "pl001", "title": "Scene Sticky Notes", "type": "update", "version": "0.1.0", "desc": "Play-in-scene sticky notes for 2D & 3D editors."}
+  ],
+  "team": [
+    {"id": "t001", "name": "Dminx", "role": "Solo Dev", "avatar": ""},
+    {"id": "t1002", "name": "Robix", "role": "Inspiration", "avatar": ""}
+  ]
+};
 /* TBT:DATA:END */
 
 (function() {
@@ -152,18 +204,6 @@ document.getElementById('bg-video').playbackRate = 0.8;
   if (tl) tlObs.observe(tl);
 })();
 
-document.querySelectorAll('.mag-btn').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const r = btn.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width/2;
-    const y = e.clientY - r.top  - r.height/2;
-    btn.style.transform = `translate(${x*0.18}px, ${y*0.28}px) translateY(-3px)`;
-  });
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = '';
-  });
-});
-
 function initSpotlight(selector) {
   document.querySelectorAll(selector).forEach(card => {
     card.addEventListener('mousemove', e => {
@@ -183,6 +223,7 @@ function animateCount(el, target, dur=1400) {
     if (p<1) requestAnimationFrame(tick); else el.textContent=target;
   })(start);
 }
+
 function initStats() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -211,21 +252,32 @@ function openPatchModal(projectId) {
     </div>`).join('');
   document.getElementById('patch-modal').classList.add('open');
 }
+
 document.getElementById('patch-modal-close').addEventListener('click', () => document.getElementById('patch-modal').classList.remove('open'));
 document.getElementById('patch-modal').addEventListener('click', e => { if (e.target===document.getElementById('patch-modal')) document.getElementById('patch-modal').classList.remove('open'); });
 document.addEventListener('keydown', e => { if (e.key==='Escape') document.getElementById('patch-modal').classList.remove('open'); });
 
 const ICONS = {
-  store: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
-  github:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>`,
-  email:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+  store: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="11 6 5 6 5 19 16 19 16 13"></polyline>
+  <polyline points="15 3 21 3 21 9"></polyline>
+  <line x1="10" y1="14" x2="21" y2="3"></line>
+</svg>`,
+  github: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11">
+  <polyline points="16 18 22 12 16 6"></polyline>
+  <polyline points="8 6 2 12 8 18"></polyline>
+</svg>`,
+  email: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+  <polyline points="22 6 12 13 2 6"></polyline>
+</svg>`
 };
 
 function renderPipeline() {
   document.getElementById('pipeline-list').innerHTML = DATA.pipeline.map((p,i)=>`
-    <div class="pipeline-item reveal delay-${Math.min(i+1,4)}">
+    <div class="pipeline-item pi-card reveal delay-${Math.min(i+1,4)}">
       <div class="pi-index">${String(i+1).padStart(2,'0')}</div>
-      <div class="pi-card">
+      <div>
         <div class="pi-head">
           <span class="pi-title">${p.title}</span>
           <span class="pi-type type-${p.type}">${p.type.charAt(0).toUpperCase()+p.type.slice(1)}</span>
@@ -327,8 +379,8 @@ function renderChangelog(projFilter='all') {
       const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       const dateStr = mm && dd ? `${parseInt(dd)} ${months[parseInt(mm)-1]}` : '';
       return `
-        <div class="tl-entry reveal">
-          <div class="tl-card">
+        <div class="tl-entry glass-panel reveal">
+          <div>
             <div class="tl-head">
               <div>
                 <span class="tl-proj-tag pcard-tag tag-${e.category}">${e.tagLabel}</span>
@@ -399,7 +451,7 @@ function renderContact() {
     </a>
     <a href="https://github.com/trybytetools" class="contact-card" target="_blank" rel="noopener noreferrer">
       <div class="contact-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        ${ICONS.github}
       </div>
       <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/trybytetools</div></div>
     </a>`;
