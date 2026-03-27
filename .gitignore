@@ -15,3 +15,9 @@ main_env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Other
+.gitignore
+./admin-data/
+.admin-data/
+.admin.py
