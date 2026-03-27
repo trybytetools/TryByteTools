@@ -1,23 +1,4 @@
 # Local admin panel — never push these
-admin.py
+# --- Database and Backend ---
 tbt.db
-tbt.db-wal
-tbt.db-shm
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-.env
-venv/
-main_env/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Other
-.gitignore
-./admin-data/
-.admin-data/
-.admin.py
+admin.py
