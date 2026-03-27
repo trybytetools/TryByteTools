@@ -436,9 +436,9 @@ function renderStats() {
   const active  = DATA.projects.filter(p=>p.status!=='archived').length;
   const members = DATA.team.length;
   document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card"><span class="stat-num" data-count="${active}">${active}</span><div class="stat-label">Projects</div></div>
-    <div class="stat-card"><span class="stat-num" data-count="${live}">${live}</span><div class="stat-label">Live</div></div>
-    <div class="stat-card"><span class="stat-num" data-count="${members}">${members}</span><div class="stat-label">Team</div></div>`;
+    <div class="glass-panel"><span class="stat-num" data-count="${active}">${active}</span><div class="stat-label">Projects</div></div>
+    <div class="glass-panel"><span class="stat-num" data-count="${live}">${live}</span><div class="stat-label">Live</div></div>
+    <div class="glass-panel"><span class="stat-num" data-count="${members}">${members}</span><div class="stat-label">Team</div></div>`;
   initStats();
 }
 
