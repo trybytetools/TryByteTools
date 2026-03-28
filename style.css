@@ -5,7 +5,7 @@
   --blue: #3d9eff; --blue-b: #7dc8ff; --cyan: #00baff;
   --border: rgba(61,158,255,0.10); --border2: rgba(61,158,255,0.20); --border3: rgba(61,158,255,0.38);
   --text: #ddeeff; --text2: #9ab8d8; --muted: #3d5872; --muted2: #6a8eaa;
-  --font-disp: 'Syne', sans-serif; --font-sans: 'Outfit', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+  --font-disp: 'Bungee', sans-serif; --font-sans: 'Outfit', sans-serif; --font-mono: 'JetBrains Mono', monospace;
   --radius: 10px; --radius-lg: 18px; --radius-xl: 26px;
   --ease-expo: cubic-bezier(0.16,1,0.3,1); --ease-smooth: cubic-bezier(0.65,0,0.35,1);
   --max-w: 1200px; --nav-h: 68px;
@@ -39,7 +39,7 @@ body {
   border-radius: var(--radius-xl); 
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.05), 0 12px 48px rgba(0,0,0,0.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.5), 0 12px 48px rgba(0,0,0,0.22);
 }
 
 #cur { position: fixed; width: 10px; height: 10px; background: var(--cyan); border-radius: 50%; pointer-events: none; transform: translate(-50%,-50%); z-index: 9999; will-change: left, top; box-shadow: 0 0 8px var(--cyan), 0 0 18px rgba(0,186,255,0.6), 0 0 36px rgba(0,186,255,0.25); transition: opacity .2s, width .15s var(--ease-expo), height .15s var(--ease-expo); }

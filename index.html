@@ -41,7 +41,6 @@
 
   <div id="section-dots">
     <div class="s-dot active" data-target="home" data-label="Home"></div>
-    <div class="s-dot" data-target="pipeline" data-label="Pipeline"></div>
     <div class="s-dot" data-target="projects" data-label="Projects"></div>
     <div class="s-dot" data-target="changelog" data-label="Changelog"></div>
     <div class="s-dot" data-target="about" data-label="About"></div>
@@ -61,7 +60,7 @@
   <nav id="nav">
     <ul class="nav-links">
       <li><a href="#home" class="active">Home</a></li>
-      <li><a href="#pipeline">Pipeline</a></li>
+     
       <li><a href="#projects">Projects</a></li>
       <li><a href="#changelog">Updates</a></li>
       <li><a href="#about">About</a></li>
@@ -98,34 +97,19 @@
         <div class="terminal">
           <div class="terminal-bar">
             <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
-            <span class="terminal-filename">FolderIconEditor.cs</span>
-            <span class="terminal-badge">C#</span>
+            <span class="terminal-filename">portfolio.js</span>
+            <span class="terminal-badge">JS</span>
           </div>
           <div class="terminal-body">
-            <div class="tl"><span class="tl-num">1</span><span class="tl-code t-cm">// Right-click any folder → assign icon</span></div>
-            <div class="tl"><span class="tl-num">2</span><span class="tl-code"><span class="t-op">[</span><span class="t-cls">MenuItem</span><span class="t-op">(</span><span class="t-str">"Assets/Folder Icons"</span><span class="t-op">)]</span></span></div>
-            <div class="tl"><span class="tl-num">3</span><span class="tl-code"><span class="t-kw">static void</span> <span class="t-fn">AssignColor</span><span class="t-op">() {</span></span></div>
-            <div class="tl"><span class="tl-num">4</span><span class="tl-code">&nbsp;&nbsp;<span class="t-kw">var</span> <span class="t-nm">guid</span> = <span class="t-cls">AssetDatabase</span>.<span class="t-fn">AssetPathToGUID</span><span class="t-op">(</span><span class="t-nm">path</span><span class="t-op">);</span></span></div>
-            <div class="tl"><span class="tl-num">5</span><span class="tl-code">&nbsp;&nbsp;<span class="t-cls">FolderIconData</span>.<span class="t-fn">Set</span><span class="t-op">(</span><span class="t-nm">guid</span><span class="t-op">,</span> <span class="t-nm">selectedColor</span><span class="t-op">);</span></span></div>
-            <div class="tl"><span class="tl-num">6</span><span class="tl-code">&nbsp;&nbsp;<span class="t-cls">EditorApplication</span>.<span class="t-fn">RepaintProjectWindow</span><span class="t-op">();</span></span></div>
-            <div class="tl"><span class="tl-num">7</span><span class="tl-code"><span class="t-op">}</span><span class="t-cursor"></span></span></div>
+            <div class="tl"><span class="tl-num">1</span><span class="tl-code t-cm">// Build something useful. Ship it. Repeat.</span></div>
+            <div class="tl"><span class="tl-num">2</span><span class="tl-code"><span class="t-kw">const</span> <span class="t-nm">projects</span> <span class="t-op">=</span> <span class="t-op">[</span></span></div>
+            <div class="tl"><span class="tl-num">3</span><span class="tl-code">&nbsp;&nbsp;<span class="t-str">'Unity Tools'</span><span class="t-op">,</span> <span class="t-str">'Games'</span><span class="t-op">,</span> <span class="t-str">'3D Assets'</span></span></div>
+            <div class="tl"><span class="tl-num">4</span><span class="tl-code"><span class="t-op">];</span></span></div>
+            <div class="tl"><span class="tl-num">5</span><span class="tl-code"><span class="t-kw">projects</span>.<span class="t-fn">forEach</span><span class="t-op">(</span><span class="t-nm">idea</span> <span class="t-op">=&gt;</span> <span class="t-op">{</span></span></div>
+            <div class="tl"><span class="tl-num">6</span><span class="tl-code">&nbsp;&nbsp;<span class="t-fn">build</span><span class="t-op">(</span><span class="t-nm">idea</span><span class="t-op">);</span> <span class="t-fn">ship</span><span class="t-op">(</span><span class="t-nm">idea</span><span class="t-op">);</span></span></div>
+            <div class="tl"><span class="tl-num">7</span><span class="tl-code"><span class="t-op">});</span><span class="t-cursor"></span></span></div>
           </div>
-          <button class="terminal-next" id="terminal-next" type="button" aria-label="Go to Pipeline section">→</button>
-        </div>
-      </div>
-    </section>
-    
-    <section class="section" id="pipeline" aria-label="Pipeline">
-      <div class="pipeline-grid">
-        <div class="glass-panel">
-          <h2 class="section-heading reveal delay-1">What's<br><span class="accent">Coming</span></h2>
-          <p class="section-sub reveal delay-2">Every tool in motion — from early concept to release. Updated as we plan and ship.</p>
-          <div class="pipeline-list reveal delay-3" id="pipeline-list"></div>
-        </div>
-        <div class="pipeline-cta glass-panel reveal delay-2">
-          <h3>Built by <span class="accent">real devs</span>,<br>for real devs.</h3>
-          <p>Every tool we build solves a problem we've actually hit. No fluff, no feature bloat — just focused utilities that do one thing very well.</p>
-          <a href="#projects" class="btn-primary mag-btn"><span>See All Projects →</span></a>
+          <button class="terminal-next" id="terminal-next" type="button" aria-label="Go to Home section">→</button>
         </div>
       </div>
     </section>
@@ -133,13 +117,13 @@
     <section class="section" id="projects" aria-label="Projects">
       <div class="glass-panel">
         <div>
-          <h2 class="section-heading reveal delay-1">Everything<br><span class="accent">We Build</span></h2>
+          <h2 class="section-heading reveal delay-1"><span class="accent">Projects</span></h2>
         </div>
         <div class="reveal delay-2">
           <div class="filter-tabs" id="filter-tabs">
             <button class="f-tab active" data-filter="all">All</button>
             <button class="f-tab" data-filter="live">Live</button>
-            <button class="f-tab" data-filter="wip">In Dev</button>
+            <button class="f-tab" data-filter="wip">In Development</button>
             <button class="f-tab" data-filter="idea">Ideas</button>
           </div>
         </div>

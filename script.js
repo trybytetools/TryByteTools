@@ -44,9 +44,6 @@ const DATA = {
       "patchNotes": [{"version": "1.0.0", "date": "2026-03-10", "notes": "Initial release. Uploaded to GitHub."}]
     }
   ],
-  "pipeline": [
-    {"id": "pl001", "title": "Scene Sticky Notes", "type": "update", "version": "0.1.0", "desc": "Play-in-scene sticky notes for 2D & 3D editors."}
-  ],
   "team": [
     {"id": "t001", "name": "Dminx", "role": "Solo Dev", "avatar": ""},
     {"id": "t1002", "name": "Robix", "role": "Inspiration", "avatar": ""}
@@ -105,7 +102,7 @@ document.getElementById('bg-video').playbackRate = 0.8;
 (function() {
   const nav     = document.getElementById('nav');
   const navLinks= nav.querySelectorAll('.nav-links a, .nav-drawer a');
-  const SECS    = ['home','pipeline','projects','changelog','about','contact'];
+  const SECS    = ['home','projects','changelog','about','contact'];
 
   const tlEl = document.getElementById('timeline');
   if (tlEl) {
@@ -120,16 +117,7 @@ document.getElementById('bg-video').playbackRate = 0.8;
   const terminalNextBtn = document.getElementById('terminal-next');
   let navigating = false;
 
-  function goToPipeline() {
-    if (navigating) return;
-    const el = document.getElementById('pipeline');
-    if (!el) return;
-    navigating = true;
-    el.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
-    setTimeout(() => { navigating = false; }, 650);
-  }
-
-  if (terminalNextBtn) terminalNextBtn.addEventListener('click', goToPipeline);
+  //if (terminalNextBtn) terminalNextBtn.addEventListener('click', );
 
   if (terminalEl) {
     let sx = 0;
@@ -273,22 +261,8 @@ const ICONS = {
 </svg>`
 };
 
-function renderPipeline() {
-  document.getElementById('pipeline-list').innerHTML = DATA.pipeline.map((p,i)=>`
-    <div class="pipeline-item pi-card reveal delay-${Math.min(i+1,4)}">
-      <div class="pi-index">${String(i+1).padStart(2,'0')}</div>
-      <div>
-        <div class="pi-head">
-          <span class="pi-title">${p.title}</span>
-          <span class="pi-type type-${p.type}">${p.type.charAt(0).toUpperCase()+p.type.slice(1)}</span>
-          ${p.version ? `<span class="pi-ver">v${p.version}</span>` : ''}
-        </div>
-        <p class="pi-desc">${p.desc}</p>
-      </div>
-    </div>`).join('');
-}
 
-const STATUS_LABEL = { live:'Live', wip:'In Dev', idea:'Idea', archived:'Archived' };
+const STATUS_LABEL = { live:'Live', wip:'In Development', idea:'Idea', archived:'Archived' };
 
 function buildProjectCard(p, idx) {
   const isLive    = p.status==='live';
@@ -460,7 +434,6 @@ function renderContact() {
 (function boot() {
   document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-  renderPipeline();
   renderProjects('all');
   renderChangelogSidebar();
   renderChangelog('all');
